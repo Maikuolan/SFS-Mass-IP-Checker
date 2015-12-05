@@ -1,6 +1,6 @@
 <?php /*
- SFS MASS IP Checker v0.0.2-ALPHA
- This File: SFS MASS IP Checker Core Script File (3rd December 2015).
+ SFS MASS IP Checker v0.0.3-ALPHA
+ This File: SFS MASS IP Checker Core Script File (6th December 2015).
 
                                      ~ ~ ~
  This document and its associated package can be downloaded for free from:
@@ -27,7 +27,7 @@
 define('SFSMassIPChecker',true);
 parse_str($_SERVER['QUERY_STRING'],$query);
 $SFSMassIPChecker=array();
-$SFSMassIPChecker['ScriptVersion']='0.0.2-ALPHA';
+$SFSMassIPChecker['ScriptVersion']='0.0.3-ALPHA';
 $SFSMassIPChecker['UserIPAddr']=$_SERVER['REMOTE_ADDR'];
 $SFSMassIPChecker['UserAgent']='SFS-Mass-IP-Checker/'.$SFSMassIPChecker['ScriptVersion'].' (https://github.com/Maikuolan/SFS-Mass-IP-Checker) via '.$SFSMassIPChecker['UserIPAddr'];
 $SFSMassIPChecker['CacheModified']=false;
@@ -38,10 +38,7 @@ $SFSMassIPChecker['bannedipsAppend']='';
 $SFSMassIPChecker['cleanAppend']='';
 $SFSMassIPChecker['erroneousAppend']='';
 $SFSMassIPChecker['Time']=time();
-
-$SFSMassIPChecker['lang']=(!empty($_POST['lang']))?strtolower($_POST['lang']):((!empty($query['lang']))?strtolower($query['lang']):'en');
-if(!substr_count(',en,',','.$SFSMassIPChecker['lang'].','))$SFSMassIPChecker['lang']='en';
-require $GLOBALS['SFSMassIPChecker']['Path'].'/private/lang/lang.'.$SFSMassIPChecker['lang'].'.php';
+$SFSMassIPChecker['lang']=(!empty($_POST['lang']))?strtolower($_POST['lang']):((!empty($query['lang']))?strtolower($query['lang']):false);
 
 function SFSMassIPCheckerFileFetcher($f)
 	{
@@ -128,6 +125,9 @@ else
 		$SFSMassIPChecker['Cache']['LastCounterReset']=$SFSMassIPChecker['Time'];
 		}
 	}
+if(!$SFSMassIPChecker['lang'])$SFSMassIPChecker['lang']=$SFSMassIPChecker['Cache']['lang'];
+if(!substr_count(',en,de,es,fr,id,it,nl,pt,ru,zh,zh-TW,',','.$SFSMassIPChecker['lang'].','))$SFSMassIPChecker['lang']='en';
+require $GLOBALS['SFSMassIPChecker']['Path'].'/private/lang/lang.'.$SFSMassIPChecker['lang'].'.php';
 $SFSMassIPChecker['Counter']=$SFSMassIPChecker['Cache']['Counter'];
 if($SFSMassIPChecker['Cache']['lang']!==$SFSMassIPChecker['lang'])
 	{
@@ -135,54 +135,110 @@ if($SFSMassIPChecker['Cache']['lang']!==$SFSMassIPChecker['lang'])
 	$SFSMassIPChecker['Cache']['lang']=$SFSMassIPChecker['lang'];
 	}
 
-function SFSMassIPCheckerCheckIP($IPAddr)
+if(!function_exists('is_serialized'))
+	{
+	function is_serialized($input)
+		{
+		return ($input===serialize(false)||@unserialize($input)!==false);
+		}
+	}
+
+function SFSMassIPCheckerCheckIP($IPAddr,$PreChecked=false,$EntryID=false,$Final=false)
 	{
 	if(!isset($GLOBALS['SFSMassIPChecker']['bannedips']))$GLOBALS['SFSMassIPChecker']['bannedips']=','.SFSMassIPCheckerFileFetcher($GLOBALS['SFSMassIPChecker']['Path'].'/private/bannedips.csv');
 	if(!isset($GLOBALS['SFSMassIPChecker']['clean']))$GLOBALS['SFSMassIPChecker']['clean']=','.SFSMassIPCheckerFileFetcher($GLOBALS['SFSMassIPChecker']['Path'].'/private/clean.csv');
 	if(!isset($GLOBALS['SFSMassIPChecker']['erroneous']))$GLOBALS['SFSMassIPChecker']['erroneous']=','.SFSMassIPCheckerFileFetcher($GLOBALS['SFSMassIPChecker']['Path'].'/private/erroneous.csv');
 	if(is_array($IPAddr))
 		{
-		$IPAddr=array_unique($IPAddr);
-		sort($IPAddr);
+		if(!isset($GLOBALS['SFSMassIPChecker']['PostChecked'])||!isset($GLOBALS['SFSMassIPChecker']['BulkResults'])||!isset($GLOBALS['SFSMassIPChecker']['BulkQuery'])||!isset($GLOBALS['SFSMassIPChecker']['BulkIntID'])||!isset($GLOBALS['SFSMassIPChecker']['BulkProcMe']))return false;
+		if(!$PreChecked)
+			{
+			$IPAddr=array_unique($IPAddr);
+			sort($IPAddr);
+			}
+		reset($IPAddr);
 		$c=count($IPAddr);
 		for($i=0;$i<$c;$i++)
 			{
 			$k=key($IPAddr);
-			$IPAddr[$k]=SFSMassIPCheckerCheckIP($IPAddr[$k]);
+			$Final=($i+1===$c);
+			if(!$PreChecked)$GLOBALS['SFSMassIPChecker']['PostChecked'][$k]=$IPAddr[$k];
+			$GLOBALS['SFSMassIPChecker']['BulkProcMe']=false;
+			$IPAddr[$k]=SFSMassIPCheckerCheckIP($IPAddr[$k],$PreChecked,$k,$Final);
+			if($GLOBALS['SFSMassIPChecker']['BulkProcMe'])
+				{
+				$ic=count($IPAddr[$k]);
+				for($ii=0;$ii<$ic;$ii++)
+					{
+					$IPAddr[$GLOBALS['SFSMassIPChecker']['BulkResults'][$ii]]=$IPAddr[$k][$ii];
+					}
+				$GLOBALS['SFSMassIPChecker']['BulkResults']=array();
+				}
 			next($IPAddr);
 			}
+		if(!$PreChecked)return SFSMassIPCheckerCheckIP($IPAddr,true);
 		return $IPAddr;
 		}
-	if(empty($IPAddr))return $IPAddr.','.$GLOBALS['SFSMassIPChecker']['langdata']['failure_badip'].',0,-';
-	if(substr_count($GLOBALS['SFSMassIPChecker']['bannedips'],','.$IPAddr.','))return $IPAddr.','.$GLOBALS['SFSMassIPChecker']['langdata']['success_local'].',>0,-';
-	if(substr_count($GLOBALS['SFSMassIPChecker']['clean'],','.$IPAddr.','))return $IPAddr.','.$GLOBALS['SFSMassIPChecker']['langdata']['success_local'].',0,-';
-	if(substr_count($GLOBALS['SFSMassIPChecker']['erroneous'],','.$IPAddr.','))return $IPAddr.','.$GLOBALS['SFSMassIPChecker']['langdata']['erroneous_local'].',!,-';
-	$Context=stream_context_create(array('http'=>array('method'=>'POST','header'=>'Content-type: application/x-www-form-urlencoded; charset=iso-8859-1','user_agent'=>$GLOBALS['SFSMassIPChecker']['UserAgent'],'content'=>'ip='.urlencode($IPAddr),'timeout'=>9)));
-	$Results=@file_get_contents('http://www.stopforumspam.com/api?ip='.urlencode($IPAddr),false,$Context);
-	if(substr_count($Results,'request not understood'))$appears=$GLOBALS['SFSMassIPChecker']['langdata']['failure_notunderstood'];
-	else if(!$Results)$appears=$GLOBALS['SFSMassIPChecker']['langdata']['failure_timeout'];
-	if(empty($appears))
+	if($EntryID===false)return false;
+	if(!$PreChecked)
 		{
-		$x=preg_match('/<appears>(.{0,64})<\/appears>/i',$Results,$appears);
-		$appears=($x)?$appears[1]:'';
-		$x=preg_match('/<lastseen>(.{0,64})<\/lastseen>/i',$Results,$lastseen);
-		$lastseen=($x)?$lastseen[1]:'';
-		$x=preg_match('/<frequency>(.{0,64})<\/frequency>/i',$Results,$frequency);
-		$frequency=($x)?$frequency[1]:'';
+		if(empty($IPAddr))return $IPAddr.','.$GLOBALS['SFSMassIPChecker']['langdata']['failure_badip'].',0';
+		if(substr_count($GLOBALS['SFSMassIPChecker']['bannedips'],','.$IPAddr.','))return $IPAddr.','.$GLOBALS['SFSMassIPChecker']['langdata']['success_local'].',>0';
+		if(substr_count($GLOBALS['SFSMassIPChecker']['clean'],','.$IPAddr.','))return $IPAddr.','.$GLOBALS['SFSMassIPChecker']['langdata']['success_local'].',0';
+		if(substr_count($GLOBALS['SFSMassIPChecker']['erroneous'],','.$IPAddr.','))return $IPAddr.','.$GLOBALS['SFSMassIPChecker']['langdata']['erroneous_local'].',!';
+		return false;
 		}
-	if($appears=='yes'||$appears=='no')$appears=$GLOBALS['SFSMassIPChecker']['langdata']['success_remote'];
-	else
+	if($IPAddr===false)
 		{
+		if(!isset($GLOBALS['SFSMassIPChecker']['PostChecked'][$EntryID]))return false;
+		$IPAddr=$GLOBALS['SFSMassIPChecker']['PostChecked'][$EntryID];
+		}
+	else return $IPAddr;
+	if(!empty($GLOBALS['SFSMassIPChecker']['BulkQuery']))$GLOBALS['SFSMassIPChecker']['BulkQuery'].='&';
+	$GLOBALS['SFSMassIPChecker']['BulkQuery'].='ip[]='.urlencode($IPAddr);
+	$GLOBALS['SFSMassIPChecker']['BulkResults'][$GLOBALS['SFSMassIPChecker']['BulkIntID']]=$EntryID;
+	$GLOBALS['SFSMassIPChecker']['BulkIntID']++;
+	if($Final||$GLOBALS['SFSMassIPChecker']['BulkIntID']>14)
+		{
+		$Context=stream_context_create(array('http'=>array('method'=>'POST','header'=>'Content-type: application/x-www-form-urlencoded; charset=iso-8859-1','user_agent'=>$GLOBALS['SFSMassIPChecker']['UserAgent'],'content'=>$GLOBALS['SFSMassIPChecker']['BulkQuery'],'timeout'=>120)));
+		$Results=@file_get_contents('http://www.stopforumspam.com/api?'.$GLOBALS['SFSMassIPChecker']['BulkQuery'].'&f=serial',false,$Context);
+		$GLOBALS['SFSMassIPChecker']['BulkProcMe']=true;
+		$GLOBALS['SFSMassIPChecker']['BulkQuery']='';
+		$GLOBALS['SFSMassIPChecker']['BulkIntID']=0;
 		$GLOBALS['SFSMassIPChecker']['Counter']++;
-		$GLOBALS['SFSMassIPChecker']['erroneousAppend'].=$IPAddr.',';
-		return $IPAddr.','.$appears.',!,-';
+		if(!is_serialized($Results))
+			{
+			// AAA ERROR! spit an error
+			die('Error message placeholder 001');
+			if(substr_count($Results,'request not understood'))$appears=$GLOBALS['SFSMassIPChecker']['langdata']['failure_notunderstood'];
+			else if(!$Results)$appears=$GLOBALS['SFSMassIPChecker']['langdata']['failure_timeout'];
+			}
+		$Results=unserialize($Results);
+		if(!isset($Results['success'])||!isset($Results['ip']))
+			{
+			// AAA ERROR! spit an error
+			die('Error message placeholder 002');
+			return false;
+			}
+		$c=count($Results['ip']);
+		$Output=array();
+		for($i=0;$i<$c;$i++)
+			{
+			if(isset($Results['ip'][$i]['appears']))$Results['ip'][$i]['appears']=$GLOBALS['SFSMassIPChecker']['langdata']['success_remote'];
+			else
+				{
+				$GLOBALS['SFSMassIPChecker']['erroneousAppend'].=$Results['ip'][$i]['value'].',';
+				$Output[$i]=$Results['ip'][$i]['value'].','.$GLOBALS['SFSMassIPChecker']['langdata']['failure_timeout'].',!';
+				continue;
+				}
+			if(empty($Results['ip'][$i]['frequency']))$Results['ip'][$i]['frequency']=0;
+			if($Results['ip'][$i]['frequency']>0)$GLOBALS['SFSMassIPChecker']['bannedipsAppend'].=$Results['ip'][$i]['value'].',';
+			else $GLOBALS['SFSMassIPChecker']['cleanAppend'].=$Results['ip'][$i]['value'].',';
+			$Output[$i]=$Results['ip'][$i]['value'].','.$Results['ip'][$i]['appears'].','.$Results['ip'][$i]['frequency'];
+			}
+		return $Output;
 		}
-	if(empty($frequency))$frequency=0;
-	if(empty($lastseen))$lastseen='-';
-	$GLOBALS['SFSMassIPChecker']['Counter']++;
-	if($frequency>0)$GLOBALS['SFSMassIPChecker']['bannedipsAppend'].=$IPAddr.',';
-	else $GLOBALS['SFSMassIPChecker']['cleanAppend'].=$IPAddr.',';
-	return $IPAddr.','.$appears.','.$frequency.','.$lastseen;
+	return false;
 	}
 
 if($SFSMassIPChecker['Cache']['LastWhiteReset']>0&&($SFSMassIPChecker['Cache']['LastWhiteReset']+86400)<$SFSMassIPChecker['Time'])
@@ -237,31 +293,27 @@ if(!file_exists($SFSMassIPChecker['Path'].'/private/bannedips.csv'))
 	die('</body></html>');
 	}
 
-$SFSMassIPChecker['PageBody']='<form action="" method="POST" name="SFSMassIPChecker"><center>'.$SFSMassIPChecker['langdata']['separate_entries'].'<br /><br /><textarea name="IPAddr" id="IPAddr" style="width:98%;height:100px;"></textarea><br /><br /><input type="submit" value="'.$SFSMassIPChecker['langdata']['input_submit'].'" /></center></form>';
+$SFSMassIPChecker['PageBody']='<form action="" method="POST" name="SFSMassIPChecker"><center>'.$SFSMassIPChecker['langdata']['separate_entries'].'<br /><br /><textarea name="IPAddr" id="IPAddr" style="width:98%;height:100px;"></textarea><br /><br /><input style="font-family:\'Lucida Grande\',Tahoma,Verdana,Arial,MingLiU;font-size:10px;letter-spacing:1px;text-align:center;text-decoration:none;color:#333333;" type="submit" value="'.$SFSMassIPChecker['langdata']['input_submit'].'" /></center></form>';
 
 if(!empty($SFSMassIPChecker['IPAddr']))
 	{
 	$SFSMassIPChecker['IPAddr']=preg_replace('/[^,\n0-9\.]/','',$SFSMassIPChecker['IPAddr']);
-	$SFSMassIPChecker['IPAddr']=preg_split('/[,\n]+/',$SFSMassIPChecker['IPAddr'],-1,PREG_SPLIT_NO_EMPTY);
+	$SFSMassIPChecker['IPAddr']=preg_split('/[,\n\r]+/',$SFSMassIPChecker['IPAddr'],-1,PREG_SPLIT_NO_EMPTY);
 	$SFSMassIPChecker['bannedips']=SFSMassIPCheckerFileFetcher($SFSMassIPChecker['Path'].'/private/bannedips.csv');
+	$SFSMassIPChecker['BulkResults']=$SFSMassIPChecker['PostChecked']=array();
+	$SFSMassIPChecker['BulkQuery']='';
+	$SFSMassIPChecker['BulkIntID']=0;
+	$SFSMassIPChecker['BulkProcMe']=false;
 	$SFSMassIPChecker['Results']=SFSMassIPCheckerCheckIP($SFSMassIPChecker['IPAddr']);
-	$SFSMassIPChecker['PageBody'].='<hr /><center><table style="width:500px;text-align:center;"><tr><td><strong>'.$SFSMassIPChecker['langdata']['table_ip_address'].'</strong></td><td><strong>'.$SFSMassIPChecker['langdata']['table_lookup_status'].'</strong></td><td><strong>'.$SFSMassIPChecker['langdata']['table_spammer'].'</strong></td><td><strong>'.$SFSMassIPChecker['langdata']['table_frequency'].'</strong></td><td><strong>'.$SFSMassIPChecker['langdata']['table_last_seen'].'</strong></td></tr>';
+	unset($SFSMassIPChecker['BulkProcMe'],$SFSMassIPChecker['BulkIntID'],$SFSMassIPChecker['BulkQuery'],$SFSMassIPChecker['BulkResults'],$SFSMassIPChecker['PostChecked']);
+	$SFSMassIPChecker['PageBody'].='<hr /><center><table style="width:500px;text-align:center;"><tr><td><strong>'.$SFSMassIPChecker['langdata']['table_ip_address'].'</strong></td><td><strong>'.$SFSMassIPChecker['langdata']['table_lookup_status'].'</strong></td><td><strong>'.$SFSMassIPChecker['langdata']['table_spammer'].'</strong></td><td><strong>'.$SFSMassIPChecker['langdata']['table_frequency'].'</strong></td></tr>';
+	reset($SFSMassIPChecker['Results']);
 	$SFSMassIPChecker['c']=count($SFSMassIPChecker['Results']);
 	for($SFSMassIPChecker['i']=0;$SFSMassIPChecker['i']<$SFSMassIPChecker['c'];$SFSMassIPChecker['i']++)
 		{
 		$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']]=explode(',',$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']]);
-		if($SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2]==='0')
-			{
-			$SFSMassIPChecker['PageBody'].='<tr><td><a href="http://www.stopforumspam.com/ipcheck/'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'">'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'</a></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1].'</td><td><span style="color:#009900">'.$SFSMassIPChecker['langdata']['results_not_listed'].'</span></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2].'</td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][3].'</td></tr>';
-			}
-		else if($SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2]==='!')
-			{
-			$SFSMassIPChecker['PageBody'].='<tr><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'</td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1].'</td><td><span style="color:#ff8800">'.$SFSMassIPChecker['langdata']['results_erroneous'].'</span></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2].'</td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][3].'</td></tr>';
-			}
-		else
-			{
-			$SFSMassIPChecker['PageBody'].='<tr><td><a href="http://www.stopforumspam.com/ipcheck/'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'">'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'</a></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1].'</td><td><span style="color:#990000">'.$SFSMassIPChecker['langdata']['results_listed'].'</span></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2].'</td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][3].'</td></tr>';
-			}
+		if($SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2]==='0')$SFSMassIPChecker['PageBody'].='<tr><td><a href="http://www.stopforumspam.com/ipcheck/'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'">'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'</a></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1].'</td><td><span style="color:#009900">'.$SFSMassIPChecker['langdata']['results_not_listed'].'</span></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2].'</td></tr>';
+		else $SFSMassIPChecker['PageBody'].=($SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2]==='!')?'<tr><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'</td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1].'</td><td><span style="color:#ff8800">'.$SFSMassIPChecker['langdata']['results_erroneous'].'</span></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2].'</td></tr>':'<tr><td><a href="http://www.stopforumspam.com/ipcheck/'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'">'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0].'</a></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1].'</td><td><span style="color:#990000">'.$SFSMassIPChecker['langdata']['results_listed'].'</span></td><td>'.$SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2].'</td></tr>';
 		}
 	unset($SFSMassIPChecker['Results']);
 	$SFSMassIPChecker['PageBody'].='</table></center>';
