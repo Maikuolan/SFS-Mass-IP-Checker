@@ -1,6 +1,6 @@
 /*
- SFS MASS IP Checker v0.0.3-ALPHA
- This File: SFS MASS IP Checker Javascript File (6th December 2015).
+ SFS MASS IP Checker
+ This File: Javascript functionality (13th December 2015).
 
                                      ~ ~ ~
  This document and its associated package can be downloaded for free from:

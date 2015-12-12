@@ -1,6 +1,6 @@
 <?php /*
- SFS MASS IP Checker v0.0.3-ALPHA
- This File: SFS MASS IP Checker Spanish Language Data (6th December 2015).
+ SFS MASS IP Checker
+ This File: Spanish language data (13th December 2015).
 
                                      ~ ~ ~
  This document and its associated package can be downloaded for free from:

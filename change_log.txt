@@ -1,0 +1,24 @@
+SFS Mass IP Checker change_log.txt
+
+=== VERSIONING GUIDELINES ===
+SFS Mass IP Checker adheres to the SemVer guidelines for versioning.
+
+Versioning guidelines for SemVer can be found at: http://www.semver.org/
+
+=== FUTURE GOALS ===
+New entries will be added to this list when new goals are created, and old
+entries will be deleted when those goals have been achieved.
+
+- Complete the incomplete i18n translations.
+
+- TCPDF integration and PDF export functionality.
+
+- CSV export functionality.
+
+=== Changes made since last versioned release ===
+
+- [2015.12.12; Documentation; Maikuolan]: Added a changelog.
+
+Versions < 0.1.0 are ALPHAs.
+
+EOF

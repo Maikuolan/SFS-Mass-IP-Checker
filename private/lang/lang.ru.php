@@ -1,6 +1,6 @@
 <?php /*
- SFS MASS IP Checker v0.0.3-ALPHA
- This File: SFS MASS IP Checker Russian Language Data (6th December 2015).
+ SFS MASS IP Checker
+ This File: Russian language data (13th December 2015).
 
                                      ~ ~ ~
  This document and its associated package can be downloaded for free from:
@@ -13,13 +13,13 @@ if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be ac
 $SFSMassIPChecker['langdata']=array();
 $SFSMassIPChecker['langdata']['xmlLang']='ru';
 
-$SFSMassIPChecker['langdata']['bannedips_missing']='Downloading a fresh copy of "bannedips.csv" from SFS (we utilise this file in order to avoid needing to make an unnecessarily large number of requests to the server);<br /><br />Please wait (the page will refresh automatically after the download has completed)...<br /><br />';
-$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip']='Can\'t locate "%PATH%/private/bannedips.csv"!<br />Please download manually from:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />After downloading, decompress the contained file to the \'private\' directory of the SFS Mass IP Checker, and then try again.<br /><br />(( We utilise this file in order to avoid needing to make an unnecessarily large number of requests to the server. ))';
-$SFSMassIPChecker['langdata']['cant_write']='Unable to write to cache!<br />Please check your CHMOD file permissions!';
+$SFSMassIPChecker['langdata']['bannedips_missing']='Загрузка свежую копию "bannedips.csv" от SFS (мы используем этот файл чтобы избежать необходимости внесения излишне большое количество запросов к серверу);<br /><br />Пожалуйста подождите (страница обновится автоматически после завершения загрузки)...<br /><br />';
+$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip']='Не может найти "%PATH%/private/bannedips.csv"!<br />Вы можете скачать вручную:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />После загрузки, распаковки содержимого файла в \'private\' папка из SFS Mass IP Checker, а затем повторите попытку.<br /><br />(( Мы используем этот файл чтобы избежать необходимости внесения излишне большое количество запросов к серверу. ))';
+$SFSMassIPChecker['langdata']['cant_write']='Невозможно записать в кэш!<br />Пожалуйста проверьте CHMOD!';
 $SFSMassIPChecker['langdata']['erroneous_local']='Ошибочный (Локальное).';
 $SFSMassIPChecker['langdata']['failure_badip']='Отказ (плохо IP-адрес)!';
-$SFSMassIPChecker['langdata']['failure_notunderstood']='Отказ (request not understood by SFS)!';
-$SFSMassIPChecker['langdata']['failure_timeout']='Отказ (request error or timed-out)!';
+$SFSMassIPChecker['langdata']['failure_notunderstood']='Отказ (запрос не понял SFS)!';
+$SFSMassIPChecker['langdata']['failure_timeout']='Отказ (запрос ошибка or timed-out)!';
 $SFSMassIPChecker['langdata']['input_submit']='Отправить';
 $SFSMassIPChecker['langdata']['linkname_addspamdata']='Добавить данные о спаме';
 $SFSMassIPChecker['langdata']['linkname_downloads']='Загрузки';
@@ -32,7 +32,7 @@ $SFSMassIPChecker['langdata']['linkname_useful']='Полезные Инстру�
 $SFSMassIPChecker['langdata']['results_erroneous']='Ошибочный';
 $SFSMassIPChecker['langdata']['results_listed']='В Списке';
 $SFSMassIPChecker['langdata']['results_not_listed']='Нет В Списке';
-$SFSMassIPChecker['langdata']['separate_entries']='Separate entries via commas or linebreaks. Entries should consist of IPv4 addresses.';
+$SFSMassIPChecker['langdata']['separate_entries']='Отделять записи с запятыми или разрывы строк. Записи должны состоять из адресов IPv4.';
 $SFSMassIPChecker['langdata']['success_local']='Успех (Локальное).';
 $SFSMassIPChecker['langdata']['success_remote']='Успех (Удаленное).';
 $SFSMassIPChecker['langdata']['table_frequency']='Частота';

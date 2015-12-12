@@ -1,6 +1,6 @@
 <?php /*
- SFS MASS IP Checker v0.0.3-ALPHA
- This File: SFS MASS IP Checker Chinese (Simplified) Language Data (6th December 2015).
+ SFS MASS IP Checker
+ This File: Chinese (simplified) language data (13th December 2015).
 
                                      ~ ~ ~
  This document and its associated package can be downloaded for free from:
@@ -13,9 +13,9 @@ if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be ac
 $SFSMassIPChecker['langdata']=array();
 $SFSMassIPChecker['langdata']['xmlLang']='zh';
 
-$SFSMassIPChecker['langdata']['bannedips_missing']='Downloading a fresh copy of "bannedips.csv" from SFS (we utilise this file in order to avoid needing to make an unnecessarily large number of requests to the server);<br /><br />Please wait (the page will refresh automatically after the download has completed)...<br /><br />';
-$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip']='Can\'t locate "%PATH%/private/bannedips.csv"!<br />Please download manually from:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />After downloading, decompress the contained file to the \'private\' directory of the SFS Mass IP Checker, and then try again.<br /><br />(( We utilise this file in order to avoid needing to make an unnecessarily large number of requests to the server. ))';
-$SFSMassIPChecker['langdata']['cant_write']='Unable to write to cache!<br />Please check your CHMOD file permissions!';
+$SFSMassIPChecker['langdata']['bannedips_missing']='下载一个新的副本的“bannedips.csv”从SFS（我们利用这个文件为了避免需要的作出大量不必要的请求到服务器）;<br /><br />请稍候（页面会自动刷新当下载完成）。。。<br /><br />';
+$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip']='无法找到“%PATH%/private/bannedips.csv”！<br />请从手动下载：<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />然后，解压缩文件包含在“private”文件夹下的“SFS Mass IP Checker”，然后重试。<br /><br />（（ 我们利用这个文件为了避免需要的作出大量不必要的请求到服务器。 ））';
+$SFSMassIPChecker['langdata']['cant_write']='无法写入缓存！<br />请检查您的CHMOD文件的权限！';
 $SFSMassIPChecker['langdata']['erroneous_local']='错误（本地）。';
 $SFSMassIPChecker['langdata']['failure_badip']='失败（无效IP地址）！';
 $SFSMassIPChecker['langdata']['failure_notunderstood']='失败（请求不明白）！';
