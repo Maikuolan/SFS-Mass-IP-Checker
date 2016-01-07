@@ -1,0 +1,14 @@
+{
+    "name": "maikuolan/sfs-mass-ip-checker",
+    "description": "A stand-alone script for checking IP addresses en-masse against the Stop Forum Spam database.",
+    "keywords": ["stopforumspam","stop forum spam","anti-spam","sfs"],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/Maikuolan/SFS-Mass-IP-Checker/issues",
+        "wiki": "https://github.com/Maikuolan/SFS-Mass-IP-Checker/wiki",
+        "source": "https://github.com/Maikuolan/SFS-Mass-IP-Checker"
+    },
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
