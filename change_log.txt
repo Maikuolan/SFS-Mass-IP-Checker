@@ -17,6 +17,10 @@ entries will be deleted when those goals have been achieved.
 
 === Changes made since last versioned release ===
 
+- [2016.01.08; Sub-minor code change; Maikuolan]: Closing PHP tags removed and
+  all tabs converted to spaces (in order to improve compliance with PSR); Added
+  some phpDocs information into all script files; No other changes.
+
 - [2015.12.12; Documentation; Maikuolan]: Added a changelog.
 
 Versions < 0.1.0 are ALPHAs.

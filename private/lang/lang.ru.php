@@ -1,13 +1,19 @@
-<?php /*
- SFS MASS IP Checker
- This File: Russian language data (13th December 2015).
+<?php
+/**
+ * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
+ * against the Stop Forum Spam database.
+ *
+ * This file: Russian language data (8th January 2016).
+ * 
+ * This document and its associated package can be downloaded for free from:
+ * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
+ *
+ * @package Maikuolan/SFS-Mass-IP-Checker
+ */
 
-                                     ~ ~ ~
- This document and its associated package can be downloaded for free from:
- - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
-
-*/
-
+/**
+ * Prevents execution from outside of the script.
+ */
 if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
 
 $SFSMassIPChecker['langdata']=array();
@@ -40,5 +46,3 @@ $SFSMassIPChecker['langdata']['table_ip_address']='IP-Адрес';
 $SFSMassIPChecker['langdata']['table_last_seen']='Последний Доклад';
 $SFSMassIPChecker['langdata']['table_lookup_status']='Статус';
 $SFSMassIPChecker['langdata']['table_spammer']='Спамер?';
-
-?>
