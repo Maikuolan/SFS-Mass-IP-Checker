@@ -1,14 +1,17 @@
 <?php
 /**
- * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
- * against the Stop Forum Spam database.
+ * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse against the Stop Forum Spam database.
  *
- * This file: SFS MASS IP Checker core script file (8th January 2016).
+ * This file: SFS MASS IP Checker core script file (10th January 2016).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
  * @package Maikuolan/SFS-Mass-IP-Checker
+ *
+ * @todo Future goal: Complete the incomplete i18n translations.
+ * @todo Future goal: TCPDF integration and PDF export functionality.
+ * @todo Future goal: CSV export functionality.
  */
 
 define('SFSMassIPChecker',true);
@@ -53,8 +56,7 @@ function SFSMassIPCheckerFileFetcher($f)
     }
 
 /**
- * This function parses the `template.html` file and is responsible for the
- * page output to the browser.
+ * This function parses the `template.html` file and is responsible for the page output to the browser.
  *
  * @param string|array $pagedata Data variables to be parsed into the `template.html` by the function.
  * @return string Parsed `template.html` data to be used for page output.
@@ -139,14 +141,14 @@ if($SFSMassIPChecker['Cache']['lang']!==$SFSMassIPChecker['lang'])
     $SFSMassIPChecker['Cache']['lang']=$SFSMassIPChecker['lang'];
     }
 
-/**
- * This function checks whether the input is serialized data.
- *
- * @param string $input Variable to check.
- * @return bool Returns true if the input is serialized data.
- */
 if(!function_exists('is_serialized'))
     {
+    /**
+     * This function checks whether the input is serialized data.
+     *
+     * @param string $input Variable to check.
+     * @return bool Returns true if the input is serialized data.
+     */
     function is_serialized($input)
         {
         return ($input===serialize(false)||@unserialize($input)!==false);
@@ -154,8 +156,8 @@ if(!function_exists('is_serialized'))
     }
 
 /**
- * This is the main function of the SFS Mass IP Checker responsible for
- * actually handling the IPs to be checked and for checking them against SFS.
+ * This is the main function of the SFS Mass IP Checker responsible for actually handling the IPs to be checked and
+ * for checking them against SFS.
  *
  * @param string $IPAddr A list of IPv4 addresses to check against the SFS database, delimited by newlines or commas.
  * @param bool $PreChecked Used by the function when recursively calling (should never be defined outside of recursive calls).
@@ -228,7 +230,9 @@ function SFSMassIPCheckerCheckIP($IPAddr,$PreChecked=false,$EntryID=false,$Final
         $GLOBALS['SFSMassIPChecker']['Counter']++;
         if(!is_serialized($Results))
             {
-            // AAA ERROR! spit an error
+            /**
+             * @todo Replace error message placeholder with a proper error message and implement appropriate code accordingly (placeholders aren't meant to be permanent).
+             */
             die('Error message placeholder 001');
             if(substr_count($Results,'request not understood'))$appears=$GLOBALS['SFSMassIPChecker']['langdata']['failure_notunderstood'];
             else if(!$Results)$appears=$GLOBALS['SFSMassIPChecker']['langdata']['failure_timeout'];
@@ -236,7 +240,9 @@ function SFSMassIPCheckerCheckIP($IPAddr,$PreChecked=false,$EntryID=false,$Final
         $Results=unserialize($Results);
         if(!isset($Results['success'])||!isset($Results['ip']))
             {
-            // AAA ERROR! spit an error
+            /**
+             * @todo Replace error message placeholder with a proper error message and implement appropriate code accordingly (placeholders aren't meant to be permanent).
+             */
             die('Error message placeholder 002');
             return false;
             }
@@ -293,9 +299,8 @@ if($SFSMassIPChecker['Cache']['LastCounterReset']>0&&($SFSMassIPChecker['Cache']
     }
 
 /**
- * Downloads "bannedips.zip" from Stop Forum Spam and extracts the contained
- * "bannedips.csv" file to the "private" directory of the SFS Mass IP Checker,
- * when possible, if the file doesn't already exist.
+ * Downloads "bannedips.zip" from Stop Forum Spam and extracts the contained "bannedips.csv" file to the "private"
+ * directory of the SFS Mass IP Checker, when possible, if the file doesn't already exist.
  */
 if(!file_exists($SFSMassIPChecker['Path'].'/private/bannedips.csv'))
     {
@@ -332,9 +337,8 @@ if(!file_exists($SFSMassIPChecker['Path'].'/private/bannedips.csv'))
 $SFSMassIPChecker['PageBody']='<form action="" method="POST" name="SFSMassIPChecker"><center>'.$SFSMassIPChecker['langdata']['separate_entries'].'<br /><br /><textarea name="IPAddr" id="IPAddr" style="width:98%;height:100px;"></textarea><br /><br /><input style="font-family:\'Lucida Grande\',Tahoma,Verdana,Arial,MingLiU;font-size:10px;letter-spacing:1px;text-align:center;text-decoration:none;color:#333333;" type="submit" value="'.$SFSMassIPChecker['langdata']['input_submit'].'" /></center></form>';
 
 /**
- * If the user has submitted IPs to be checked by the SFS Mass IP Checker,
- * make necessary preparations, call the `SFSMassIPCheckerCheckIP()` function
- * and prepare to parse the results into the $SFSMassIPChecker['PageBody'], so
+ * If the user has submitted IPs to be checked by the SFS Mass IP Checker, make necessary preparations, call the
+ * `SFSMassIPCheckerCheckIP()` function and prepare to parse the results into the $SFSMassIPChecker['PageBody'], so
  * that the template handler can display the results to the user.
  */
 if(!empty($SFSMassIPChecker['IPAddr']))
