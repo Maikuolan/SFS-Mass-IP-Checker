@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: English language data (8th January 2016).
+ * This file: English language data (24th January 2016).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -21,7 +21,7 @@ $SFSMassIPChecker['langdata']['xmlLang']='en';
 
 $SFSMassIPChecker['langdata']['bannedips_missing']='Downloading a fresh copy of "bannedips.csv" from SFS (we utilise this file in order to avoid needing to make an unnecessarily large number of requests to the server);<br /><br />Please wait (the page will refresh automatically after the download has completed)...<br /><br />';
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip']='Can\'t locate "%PATH%/private/bannedips.csv"!<br />Please download manually from:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />After downloading, decompress the contained file to the \'private\' directory of the SFS Mass IP Checker, and then try again.<br /><br />(( We utilise this file in order to avoid needing to make an unnecessarily large number of requests to the server. ))';
-$SFSMassIPChecker['langdata']['cant_write']='Unable to write to cache!<br />Please check your CHMOD file permissions!';
+$SFSMassIPChecker['langdata']['cant_write']='Unable to write to the cache!<br />Please check your CHMOD file permissions!';
 $SFSMassIPChecker['langdata']['erroneous_local']='Erroneous (Local).';
 $SFSMassIPChecker['langdata']['failure_badip']='Failure (bad IP address)!';
 $SFSMassIPChecker['langdata']['failure_notunderstood']='Failure (request not understood by SFS)!';
