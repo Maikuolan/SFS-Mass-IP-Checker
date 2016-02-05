@@ -18,7 +18,7 @@
 define('SFSMassIPChecker',true);
 parse_str($_SERVER['QUERY_STRING'],$query);
 $SFSMassIPChecker=array();
-$SFSMassIPChecker['ScriptVersion']='0.1.0';
+$SFSMassIPChecker['ScriptVersion']='0.1.1';
 $SFSMassIPChecker['UserIPAddr']=$_SERVER['REMOTE_ADDR'];
 $SFSMassIPChecker['UserAgent']='SFS-Mass-IP-Checker/'.$SFSMassIPChecker['ScriptVersion'].' (https://github.com/Maikuolan/SFS-Mass-IP-Checker) via '.$SFSMassIPChecker['UserIPAddr'];
 $SFSMassIPChecker['CacheModified']=false;
@@ -324,7 +324,6 @@ if(!file_exists($SFSMassIPChecker['Path'].'/private/bannedips.csv'))
         $SFSMassIPChecker['handle']=fopen($SFSMassIPChecker['Path'].'/private/bannedips.csv','w');
         fwrite($SFSMassIPChecker['handle'],$SFSMassIPChecker['ZipData']);
         fclose($SFSMassIPChecker['handle']);
-        unlink($SFSMassIPChecker['Path'].'/private/bannedips.zip');
         }
     else
         {
@@ -332,9 +331,28 @@ if(!file_exists($SFSMassIPChecker['Path'].'/private/bannedips.csv'))
         fwrite($SFSMassIPChecker['handle'],',');
         fclose($SFSMassIPChecker['handle']);
         }
+    /**
+     * Deletes the old "bannedips.zip", which we now no longer need.
+     */
+    unlink($SFSMassIPChecker['Path'].'/private/bannedips.zip');
+    /**
+     * Save cache data to the cache (prevents infinite loop with page reloading).
+     */
+    if($SFSMassIPChecker['CacheModified'])
+        {
+        $SFSMassIPChecker['handle']=fopen($SFSMassIPChecker['Path'].'/private/cache.dat','w');
+        fwrite($SFSMassIPChecker['handle'],serialize($SFSMassIPChecker['Cache']));
+        fclose($SFSMassIPChecker['handle']);
+        }
+    /**
+     * We die here, so that we can reload everything with the correct data.
+     */
     die('</body></html>');
     }
 
+/**
+ * The main body of the page (the HTML form used to submit data for querying).
+ */
 $SFSMassIPChecker['PageBody']='<form action="" method="POST" name="SFSMassIPChecker"><center>'.$SFSMassIPChecker['langdata']['separate_entries'].'<br /><br /><textarea name="IPAddr" id="IPAddr" style="width:98%;height:100px;"></textarea><br /><br /><input style="font-family:\'Lucida Grande\',Tahoma,Verdana,Arial,MingLiU;font-size:10px;letter-spacing:1px;text-align:center;text-decoration:none;color:#333333;" type="submit" value="'.$SFSMassIPChecker['langdata']['input_submit'].'" /></center></form>';
 
 /**

@@ -1,4 +1,4 @@
-SFS Mass IP Checker change_log.txt
+SFS Mass IP Checker Changelog.
 
 === VERSIONING GUIDELINES ===
 SFS Mass IP Checker adheres to the SemVer guidelines for versioning.
@@ -17,9 +17,9 @@ entries will be deleted when those goals have been achieved.
 
 === Changes made since last versioned release ===
 
-- [2016.02.05; Sub-minor code change; Maikuolan]: Added @author tags to all PHP
-  files contained in the package and added some @todo tags to some of the
-  language files.
+(none)
+
+=== Version/Release 0.1.1 ===
 
 - [2016.02.04; Sub-minor code change; Mie Shinohara]: Added language support
   for Japanese/日本語 to the SFS Mass IP Checker [lang.ja.php]. As a result, the
@@ -28,13 +28,24 @@ entries will be deleted when those goals have been achieved.
   Chinese (both *simplified and *traditional); Some of *these may need
   auditing, though.
 
+- [2016.02.05; Sub-minor code change; Maikuolan]: Added @author tags to all PHP
+  files contained in the package and added some @todo tags to some of the
+  language files.
+
+- [2016.02.05; Bug-fix; Maikuolan]: Found a bug whereby the page reload after
+  downloading a fresh copy of "bannedips.csv" would infinitely loop in certain
+  circumstances due to the page dieing prior to updating "cache.dat"; Fixed.
+
+Caleb M / Maikuolan,
+5th February 2016.
+
 === Version/Release 0.1.0 ===
+
+- [2015.12.12; Documentation; Maikuolan]: Added a changelog.
 
 - [2016.01.08; Sub-minor code change; Maikuolan]: Closing PHP tags removed and
   all tabs converted to spaces (in order to improve compliance with PSR); Added
   some phpDoc information into all script files; No other changes.
-
-- [2015.12.12; Documentation; Maikuolan]: Added a changelog.
 
 Caleb M / Maikuolan,
 8th January 2016.
