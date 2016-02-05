@@ -3,12 +3,14 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: English language data (24th January 2016).
+ * This file: English language data (5th February 2016).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
  * @package Maikuolan/SFS-Mass-IP-Checker
+ *
+ * @author Caleb M / Maikuolan
  */
 
 /**

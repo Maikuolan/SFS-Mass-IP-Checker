@@ -17,13 +17,22 @@ entries will be deleted when those goals have been achieved.
 
 === Changes made since last versioned release ===
 
-(none)
+- [2016.02.05; Sub-minor code change; Maikuolan]: Added @author tags to all PHP
+  files contained in the package and added some @todo tags to some of the
+  language files.
+
+- [2016.02.04; Sub-minor code change; Mie Shinohara]: Added language support
+  for Japanese/日本語 to the SFS Mass IP Checker [lang.ja.php]. As a result, the
+  SFS Mass IP Checker now supports 12 languages: German, English, *Spanish,
+  *French, Indonesian, *Italian, Japanese, *Dutch, *Portuguese, *Russian, and
+  Chinese (both *simplified and *traditional); Some of *these may need
+  auditing, though.
 
 === Version/Release 0.1.0 ===
 
 - [2016.01.08; Sub-minor code change; Maikuolan]: Closing PHP tags removed and
   all tabs converted to spaces (in order to improve compliance with PSR); Added
-  some phpDocs information into all script files; No other changes.
+  some phpDoc information into all script files; No other changes.
 
 - [2015.12.12; Documentation; Maikuolan]: Added a changelog.
 

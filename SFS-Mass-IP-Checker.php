@@ -8,6 +8,7 @@
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
  * @package Maikuolan/SFS-Mass-IP-Checker
+ * @author Caleb M / Maikuolan
  *
  * @todo Future goal: Complete the incomplete i18n translations.
  * @todo Future goal: TCPDF integration and PDF export functionality.
@@ -132,7 +133,7 @@ else
     }
 
 if(!$SFSMassIPChecker['lang'])$SFSMassIPChecker['lang']=$SFSMassIPChecker['Cache']['lang'];
-if(!substr_count(',en,de,es,fr,id,it,nl,pt,ru,zh,zh-TW,',','.$SFSMassIPChecker['lang'].','))$SFSMassIPChecker['lang']='en';
+if(!substr_count(',en,de,es,fr,id,it,ja,nl,pt,ru,zh,zh-TW,',','.$SFSMassIPChecker['lang'].','))$SFSMassIPChecker['lang']='en';
 require $GLOBALS['SFSMassIPChecker']['Path'].'/private/lang/lang.'.$SFSMassIPChecker['lang'].'.php';
 $SFSMassIPChecker['Counter']=$SFSMassIPChecker['Cache']['Counter'];
 if($SFSMassIPChecker['Cache']['lang']!==$SFSMassIPChecker['lang'])
