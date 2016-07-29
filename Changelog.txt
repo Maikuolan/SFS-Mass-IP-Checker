@@ -20,7 +20,9 @@ entries will be deleted when those goals have been achieved.
 - [2016.02.28; Sub-minor code change; Maikuolan]: Adjusted some of the code in
   order to improve compliance with PSR-1 and PSR-2.
 
-- [2016.02.07; Documentation]: "/change_log.txt" renamed to "/Changelog.txt".
+- [2016.03.12; Documentation]: "/change_log.txt" renamed to "/Changelog.txt".
+
+- [2016.07.29; Documentation]: "/LICENSE" renamed to "/LICENSE.txt".
 
 === Version/Release 0.1.1 ===
 
