@@ -9,8 +9,6 @@ Versioning guidelines for SemVer can be found at: http://www.semver.org/
 New entries will be added to this list when new goals are created, and old
 entries will be deleted when those goals have been achieved.
 
-- Complete the incomplete i18n translations.
-
 - TCPDF integration and PDF export functionality.
 
 - CSV export functionality.
@@ -23,6 +21,14 @@ entries will be deleted when those goals have been achieved.
 - [2016.03.12; Documentation]: "/change_log.txt" renamed to "/Changelog.txt".
 
 - [2016.07.29; Documentation]: "/LICENSE" renamed to "/LICENSE.txt".
+
+- [2016.08.10; Sub-minor code change; Maikuolan]: Slightly improved the
+  template file and added an additional link to the "Useful Tools" menu
+  [template.html]. Removed "@package" tags from the package (these aren't
+  really required or useful in the context of this script). Minor refactoring
+  and code optimisation. Completed some previously incomplete i18n strings.
+  Added language support for Vietnamese to the SFS Mass IP Checker
+  [lang.vi.php].
 
 === Version/Release 0.1.1 ===
 
@@ -56,5 +62,3 @@ Caleb M / Maikuolan,
 8th January 2016.
 
 Versions < 0.1.0 are ALPHAs.
-
-EOF

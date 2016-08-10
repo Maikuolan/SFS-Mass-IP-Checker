@@ -1,6 +1,6 @@
 /*
  SFS MASS IP Checker
- This File: Javascript functionality (13th December 2015).
+ This File: Javascript functionality (last modified: 2015.12.13).
 
                                      ~ ~ ~
  This document and its associated package can be downloaded for free from:

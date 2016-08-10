@@ -3,24 +3,20 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Portuguese language data (last modified: 2016.03.12).
+ * This file: Portuguese language data (last modified: 2016.08.10).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
- * @package Maikuolan/SFS-Mass-IP-Checker
- *
- * @todo Should get these translations audited/checked by a fluent/native speaker. I am not a fluent/native speaker, and so, can't guarantee the accuracy of these translations.
  * @author Caleb M / Maikuolan
  */
 
-/**
- * Prevents execution from outside of the script.
- */
-if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+/** Prevents execution from outside of the script. */
+if(!defined('SFSMassIPChecker')) {
+    die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+}
 
-$SFSMassIPChecker['langdata']=array();
-$SFSMassIPChecker['langdata']['xmlLang'] = 'pt';
+$SFSMassIPChecker['langdata'] = array('xmlLang' => 'pt');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Obtendo uma nova cópia do "bannedips.csv" a partir da SFS (nós utilizamos este arquivo a fim de evitar a necessidade de fazer uma desnecessariamente grande número de solicitações para o servidor);<br /><br />Por favor aguarde (a página será atualizada automaticamente após a obtenção do arquivo)...<br /><br />';
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Não é possível localizar "%PATH%/private/bannedips.csv"!<br />Por favor obter manualmente a partir de:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Depois de obter-lo, descompactar o arquivo contido no diretório \'private\' do SFS Mass IP Checker, e tente novamente.<br /><br />(( Nós utilizamos este arquivo a fim de evitar a necessidade de fazer uma desnecessariamente grande número de solicitações para o servidor. ))';

@@ -3,24 +3,20 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Chinese (Simplified) language data (last modified: 2016.03.12).
+ * This file: Chinese (simplified) language data (last modified: 2016.08.10).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
- * @package Maikuolan/SFS-Mass-IP-Checker
- *
- * @todo Should get these translations audited/checked by a fluent/native speaker. I am not a fluent/native speaker, and so, can't guarantee the accuracy of these translations.
  * @author Caleb M / Maikuolan
  */
 
-/**
- * Prevents execution from outside of the script.
- */
-if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+/** Prevents execution from outside of the script. */
+if(!defined('SFSMassIPChecker')) {
+    die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+}
 
-$SFSMassIPChecker['langdata']=array();
-$SFSMassIPChecker['langdata']['xmlLang'] = 'zh';
+$SFSMassIPChecker['langdata'] = array('xmlLang' => 'zh');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = '下载一个新的副本的“bannedips.csv”从SFS（我们利用这个文件为了避免需要的作出大量不必要的请求到服务器）;<br /><br />请稍候（页面会自动刷新当下载完成）。。。<br /><br />';
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = '无法找到“%PATH%/private/bannedips.csv”！<br />请从手动下载：<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />然后，解压缩文件包含在“private”文件夹下的“SFS Mass IP Checker”，然后重试。<br /><br />（（ 我们利用这个文件为了避免需要的作出大量不必要的请求到服务器。 ））';

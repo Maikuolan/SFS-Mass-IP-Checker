@@ -3,24 +3,21 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: German language data (last modified: 2016.03.12).
+ * This file: German language data (last modified: 2016.08.10).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
- *
- * @package Maikuolan/SFS-Mass-IP-Checker
  *
  * Thanks to Daniel Ruf for the German translations. :-)
  * @author Daniel Ruf
  */
 
-/**
- * Prevents execution from outside of the script.
- */
-if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+/** Prevents execution from outside of the script. */
+if(!defined('SFSMassIPChecker')) {
+    die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+}
 
-$SFSMassIPChecker['langdata']=array();
-$SFSMassIPChecker['langdata']['xmlLang'] = 'de';
+$SFSMassIPChecker['langdata'] = array('xmlLang' => 'de');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Lade eine aktuelle Kopie von "bannedips.csv" von SFS runter (wir verwenden diese Datei um unnötig viele Anfragen an den Server zu verhindern);<br /><br />Bitte warten (die Seite wird automatisch neugeladen, nachdem der Download abgeschlossen wurde)...<br /><br />';
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Kann "%PATH%/private/bannedips.csv" nicht finden!<br />Bitte laden Sie diese manuell runter von:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Nach dem Download entpacken Sie die Datei in das \'private\' Verzeichnis vom SFS Mass IP Checker und versuchen Sie es dann erneut.<br /><br />(( Wir verwenden diese Datei um unnötig viele Anfragen an den Server zu verhindern ))';

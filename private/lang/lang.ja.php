@@ -3,24 +3,21 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Japanese language data (last modified: 2016.03.12).
+ * This file: Japanese language data (last modified: 2016.08.10).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
- *
- * @package Maikuolan/SFS-Mass-IP-Checker
  *
  * Thanks to Mie Shinohara for the Japanese translations. :-)
  * @author Mie Shinohara
  */
 
-/**
- * Prevents execution from outside of the script.
- */
-if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+/** Prevents execution from outside of the script. */
+if(!defined('SFSMassIPChecker')) {
+    die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+}
 
-$SFSMassIPChecker['langdata']=array();
-$SFSMassIPChecker['langdata']['xmlLang'] = 'ja';
+$SFSMassIPChecker['langdata'] = array('xmlLang' => 'ja');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'SFS（エス・エフ・エス）から最新版の"bannedips.csv"をダウンロードして下さい（サーバーに過度の負担がかかるのを避けるため、このファイルを利用しています）；<br /><br />しばらくお待ちください（ダウンロード完了後ページを自動的にロードします）。。。<br /><br />';
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = '"%PATH%/private/bannedips.csv"が見つかりません！<br />こちらから手動でダウンロードして下さい。：<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />ダウンロード後、ファイルを SFS Mass IP Checker（エス・エフ・エス・マス・アイピーチェッカー）の\'private\'ディレクトリに解凍し、再度試して下さい。<br /><br />（（サーバーに過度の負担がかかるのを避けるため、このファイルを利用しています。））';

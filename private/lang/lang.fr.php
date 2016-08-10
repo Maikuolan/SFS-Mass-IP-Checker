@@ -3,24 +3,20 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: French language data (last modified: 2016.03.12).
+ * This file: French language data (last modified: 2016.08.10).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
- * @package Maikuolan/SFS-Mass-IP-Checker
- *
- * @todo Should get these translations audited/checked by a fluent/native speaker. I am not a fluent/native speaker, and so, can't guarantee the accuracy of these translations.
  * @author Caleb M / Maikuolan
  */
 
-/**
- * Prevents execution from outside of the script.
- */
-if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+/** Prevents execution from outside of the script. */
+if(!defined('SFSMassIPChecker')) {
+    die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+}
 
-$SFSMassIPChecker['langdata']=array();
-$SFSMassIPChecker['langdata']['xmlLang'] = 'fr';
+$SFSMassIPChecker['langdata'] = array('xmlLang' => 'fr');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Téléchargement d\'une nouvelle copie de "bannedips.csv" du SFS (nous utilisons ce fichier afin d\'éviter besoin de faire un nombre inutilement élevé de requêtes vers le serveur);<br /><br />S\'il vous plaît, attendez (la page est rechargée automatiquement après le téléchargement est terminé)...<br /><br />';
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Ne peut pas trouver "%PATH%/private/bannedips.csv"!<br />S\'il vous plaît télécharger manuellement d\'ici:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Après le téléchargement, décompresser le fichier contenu à la répertoire \'private\' de la SFS Mass IP Checker, et puis essayez à nouveau.<br /><br />(( Nous utilisons ce fichier afin d\'éviter besoin de faire un nombre inutilement élevé de requêtes vers le serveur. ))';

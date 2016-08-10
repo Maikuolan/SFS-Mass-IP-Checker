@@ -3,24 +3,20 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Indonesian language data (last modified: 2016.03.12).
+ * This file: Indonesian language data (last modified: 2016.08.10).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
- * @package Maikuolan/SFS-Mass-IP-Checker
- *
- * @todo Should get these translations audited/checked by a fluent/native speaker. I am not a fluent/native speaker, and so, can't guarantee the accuracy of these translations.
  * @author Caleb M / Maikuolan
  */
 
-/**
- * Prevents execution from outside of the script.
- */
-if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+/** Prevents execution from outside of the script. */
+if(!defined('SFSMassIPChecker')) {
+    die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+}
 
-$SFSMassIPChecker['langdata']=array();
-$SFSMassIPChecker['langdata']['xmlLang'] = 'id';
+$SFSMassIPChecker['langdata'] = array('xmlLang' => 'id');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Mendownload salinan "bannedips.csv" segar dari SFS (kami memanfaatkan file ini untuk menghindari perlu membuat jumlah tidak perlu besar permintaan ke server);<br /><br />Silahkan tunggu (halaman ini akan menyegarkan otomatis setelah download selesai)...<br /><br />';
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Tidak dapat menemukan "%PATH%/private/bannedips.csv"!<br />Silahkan download manual dari:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Setelah mendownload, dekompresi file yang terdapat pada \'private\' direktori dari SFS Mass IP Checker, dan kemudian coba lagi.<br /><br />(( Kami memanfaatkan file ini untuk menghindari perlu membuat jumlah tidak perlu besar permintaan ke server. ))';

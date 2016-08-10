@@ -3,24 +3,20 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Italian language data (last modified: 2016.03.12).
+ * This file: Italian language data (last modified: 2016.08.10).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
- * @package Maikuolan/SFS-Mass-IP-Checker
- *
- * @todo Should get these translations audited/checked by a fluent/native speaker. I am not a fluent/native speaker, and so, can't guarantee the accuracy of these translations.
  * @author Caleb M / Maikuolan
  */
 
-/**
- * Prevents execution from outside of the script.
- */
-if(!defined('SFSMassIPChecker'))die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+/** Prevents execution from outside of the script. */
+if(!defined('SFSMassIPChecker')) {
+    die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
+}
 
-$SFSMassIPChecker['langdata']=array();
-$SFSMassIPChecker['langdata']['xmlLang'] = 'it';
+$SFSMassIPChecker['langdata'] = array('xmlLang' => 'it');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Scaricamento una nuova copia di "bannedips.csv" da SFS (utilizziamo questo file in modo da evitare la necessità di fare un inutilmente elevato numero di richieste al server);<br /><br />Attendere prego (la pagina si aggiornerà automaticamente quando lo scaricamento è completato)...<br /><br />';
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Non può trovare "%PATH%/private/bannedips.csv"!<br />Si prega di scaricare manualmente da:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Dopo aver scaricato, decomprimere il file contenuto nella cartella \'private\' del SFS Mass IP Checker, e poi riprovare.<br /><br />(( Utilizziamo questo file in modo da evitare la necessità di fare un inutilmente elevato numero di richieste al server. ))';
