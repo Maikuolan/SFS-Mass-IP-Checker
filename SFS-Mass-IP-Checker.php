@@ -114,7 +114,7 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/cache.dat')) {
         'Counter' => '0',
         'LastCounterReset' => $SFSMassIPChecker['Time'],
         'LastBlackReset' => $SFSMassIPChecker['Time'],
-        'LastBlackReset' => $SFSMassIPChecker['Time']
+        'LastWhiteReset' => $SFSMassIPChecker['Time']
     );
     fwrite($SFSMassIPChecker['handle'], serialize($SFSMassIPChecker['Cache']));
     fclose($SFSMassIPChecker['handle']);

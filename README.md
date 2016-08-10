@@ -23,4 +23,4 @@ To install the SFS Mass IP Checker, all you need to do is upload it to a server 
 
 *Codebase version cited at the time of the latest commit was "0.1.2".*
 
-*This file, "README.md", last edited: 12th March 2016 (2016.08.10).*
+*This file, "README.md", last edited: 10th August 2016 (2016.08.10).*
