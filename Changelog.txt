@@ -39,6 +39,9 @@ PATCH RELEASE.
   improved error handling. Replaced error message placeholders with proper
   error messages.
 
+Caleb M / Maikuolan,
+8th September 2016.
+
 === Version/Release 0.1.1 ===
 PATCH RELEASE.
 
