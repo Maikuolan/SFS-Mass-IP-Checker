@@ -15,6 +15,11 @@ entries will be deleted when those goals have been achieved.
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 0.1.2 ===
+PATCH RELEASE.
+
 - [2016.02.28; Sub-minor code change; Maikuolan]: Adjusted some of the code in
   order to improve compliance with PSR-1 and PSR-2.
 
@@ -30,7 +35,12 @@ entries will be deleted when those goals have been achieved.
   Added language support for Vietnamese to the SFS Mass IP Checker
   [lang.vi.php].
 
+- [2016.09.08; Sub-minor code change; Maikuolan]: Subtle code refactoring and
+  improved error handling. Replaced error message placeholders with proper
+  error messages.
+
 === Version/Release 0.1.1 ===
+PATCH RELEASE.
 
 - [2016.02.04; Sub-minor code change; Mie Shinohara]: Added language support
   for Japanese/日本語 to the SFS Mass IP Checker [lang.ja.php]. As a result, the
@@ -51,6 +61,7 @@ Caleb M / Maikuolan,
 5th February 2016.
 
 === Version/Release 0.1.0 ===
+MINOR RELEASE (FIRST BETA).
 
 - [2015.12.12; Documentation; Maikuolan]: Added a changelog.
 

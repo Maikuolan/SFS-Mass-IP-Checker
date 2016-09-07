@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: German language data (last modified: 2016.08.10).
+ * This file: German language data (last modified: 2016.09.08).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -26,6 +26,7 @@ $SFSMassIPChecker['langdata']['erroneous_local'] = 'Fehlerhaft (Lokal).';
 $SFSMassIPChecker['langdata']['failure_badip'] = 'Fehlfunktion (ungültig IP-Adresse)!';
 $SFSMassIPChecker['langdata']['failure_notunderstood'] = 'Fehlfunktion (Anfrage nicht verstanden von SFS)!';
 $SFSMassIPChecker['langdata']['failure_timeout'] = 'Fehlfunktion (Anfrage-Fehler oder Zeitlimit)!';
+$SFSMassIPChecker['langdata']['failure_unknown'] = 'Ein unbekannter Fehler ist aufgetreten.';
 $SFSMassIPChecker['langdata']['input_submit'] = 'Absenden';
 $SFSMassIPChecker['langdata']['linkname_addspamdata'] = 'Füge Spam-Daten hinzu';
 $SFSMassIPChecker['langdata']['linkname_downloads'] = 'Downloads';

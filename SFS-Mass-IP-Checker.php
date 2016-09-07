@@ -3,15 +3,13 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Core script file (last modified: 2016.08.10).
+ * This file: Core script file (last modified: 2016.09.08).
  *
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
- * @package Maikuolan/SFS-Mass-IP-Checker
- * @author Caleb M / Maikuolan
+ * @author Caleb M (Maikuolan)
  *
- * @todo Future goal: Complete the incomplete i18n translations.
  * @todo Future goal: TCPDF integration and PDF export functionality.
  * @todo Future goal: CSV export functionality.
  */
@@ -229,7 +227,11 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
                 $GLOBALS['SFSMassIPChecker']['PostChecked'][$k] = $IPAddr[$k];
             }
             $GLOBALS['SFSMassIPChecker']['BulkProcMe'] = false;
-            $IPAddr[$k] = SFSMassIPCheckerCheckIP($IPAddr[$k], $PreChecked, $k, $Final);
+            try {
+                $IPAddr[$k] = SFSMassIPCheckerCheckIP($IPAddr[$k], $PreChecked, $k, $Final);
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
             if ($GLOBALS['SFSMassIPChecker']['BulkProcMe']) {
                 $ic = count($IPAddr[$k]);
                 for($ii = 0; $ii < $ic; $ii++) {
@@ -240,7 +242,12 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
             next($IPAddr);
         }
         if (!$PreChecked) {
-            return SFSMassIPCheckerCheckIP($IPAddr, true);
+            try {
+                $Return = SFSMassIPCheckerCheckIP($IPAddr, true);
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+            return $Return;
         }
         return $IPAddr;
     }
@@ -294,28 +301,23 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
         $GLOBALS['SFSMassIPChecker']['BulkQuery'] = '';
         $GLOBALS['SFSMassIPChecker']['BulkIntID'] = 0;
         $GLOBALS['SFSMassIPChecker']['Counter']++;
+        /** Throw an exception if results aren't serialised. */
         if (!is_serialized($Results)) {
-            /**
-             * @todo Replace error message placeholder with a proper error
-             *      message and implement appropriate code accordingly
-             *      (placeholders aren't meant to be permanent).
-             */
-            die('Error message placeholder 001');
             if (substr_count($Results, 'request not understood')) {
-                $appears = $GLOBALS['SFSMassIPChecker']['langdata']['failure_notunderstood'];
+                /** The API didn't understand the request. */
+                throw new \Exception(1);
             } elseif (!$Results) {
-                $appears = $GLOBALS['SFSMassIPChecker']['langdata']['failure_timeout'];
+                /** There weren't any results (the request might've timed-out). */
+                throw new \Exception(2);
+            } else {
+                /** Some other error or problem occurred. */
+                throw new \Exception(3);
             }
         }
         $Results = unserialize($Results);
         if (!isset($Results['success']) || !isset($Results['ip'])) {
-            /**
-             * @todo Replace error message placeholder with a proper error
-             *      message and implement appropriate code accordingly
-             *      (placeholders aren't meant to be permanent).
-             */
-            die('Error message placeholder 002');
-            return false;
+            /** Throw an exception if the lookup failed. */
+            throw new \Exception(3);
         }
         $c = count($Results['ip']);
         $Output = array();
@@ -463,7 +465,7 @@ $SFSMassIPChecker['PageBody'] =
     'ea name="IPAddr" id="IPAddr" style="width:98%;height:100px;"></textarea' .
     '><br /><br /><input style="font-family:\'Lucida Grande\',Tahoma,Verdana' .
     ',Arial,MingLiU;font-size:10px;letter-spacing:1px;text-align:center;text' .
-    '-decoration:none;color:#333333;" type="submit" value="' .
+    '-decoration:none;color:#333" type="submit" value="' .
     $SFSMassIPChecker['langdata']['input_submit'] . '" /></center></form>';
 
 /**
@@ -483,17 +485,52 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
     $SFSMassIPChecker['BulkResults'] =
     $SFSMassIPChecker['PostChecked'] = array();
     $SFSMassIPChecker['BulkQuery'] = '';
+    $SFSMassIPChecker['Error'] =
     $SFSMassIPChecker['BulkIntID'] = 0;
+    $e =
     $SFSMassIPChecker['BulkProcMe'] = false;
-    $SFSMassIPChecker['Results'] =
-        SFSMassIPCheckerCheckIP($SFSMassIPChecker['IPAddr']);
+    try {
+        $SFSMassIPChecker['Results'] =
+            SFSMassIPCheckerCheckIP($SFSMassIPChecker['IPAddr']);
+    } catch (\Exception $e) {
+        $SFSMassIPChecker['Error'] = $e->getMessage();
+    }
     unset(
+        $e,
         $SFSMassIPChecker['BulkProcMe'],
         $SFSMassIPChecker['BulkIntID'],
         $SFSMassIPChecker['BulkQuery'],
         $SFSMassIPChecker['BulkResults'],
         $SFSMassIPChecker['PostChecked']
     );
+
+    /** Code block executed if any errors occurred during lookup. */
+    if ($SFSMassIPChecker['Error']) {
+
+        $SFSMassIPChecker['PageBody'] .=
+            '<hr /><center><img src="public/error.png" alt="Error!" /><br />';
+
+        if ($SFSMassIPChecker['Error'] === 1) {
+            $SFSMassIPChecker['PageBody'] .= $GLOBALS['SFSMassIPChecker']['langdata']['failure_notunderstood'];
+        } elseif ($SFSMassIPChecker['Error'] === 2) {
+            $SFSMassIPChecker['PageBody'] .= $GLOBALS['SFSMassIPChecker']['langdata']['failure_timeout'];
+        } else {
+            $SFSMassIPChecker['PageBody'] .= $GLOBALS['SFSMassIPChecker']['langdata']['failure_unknown'];
+        }
+
+        $SFSMassIPChecker['PageBody'] .= '</center><hr />';
+
+        /** Save cache data to the cache. */
+        if ($SFSMassIPChecker['CacheModified']) {
+            $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/cache.dat', 'w');
+            fwrite($SFSMassIPChecker['handle'], serialize($SFSMassIPChecker['Cache']));
+            fclose($SFSMassIPChecker['handle']);
+        }
+
+        /** Prepare final page output and kill the script. */
+        die(ParseTemplate($SFSMassIPChecker['PageBody']));
+
+    }
 
     $SFSMassIPChecker['PageBody'] .=
         '<hr /><center><table style="width:500px;text-align:center;"><tr><td><strong>' .
@@ -522,7 +559,7 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
                 $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0] .
                 '</a></td><td>' .
                 $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1] .
-                '</td><td><span style="color:#009900">' .
+                '</td><td><span style="color:#090">' .
                 $SFSMassIPChecker['langdata']['results_not_listed'] .
                 '</span></td><td>' .
                 $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2] .
@@ -534,7 +571,7 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
                     $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0] .
                     '</td><td>' .
                     $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1] .
-                    '</td><td><span style="color:#ff8800">' .
+                    '</td><td><span style="color:#f80">' .
                     $SFSMassIPChecker['langdata']['results_erroneous'] .
                     '</span></td><td>' .
                     $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2] .
@@ -546,7 +583,7 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
                     $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0] .
                     '</a></td><td>' .
                     $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1] .
-                    '</td><td><span style="color:#990000">' .
+                    '</td><td><span style="color:#900">' .
                     $SFSMassIPChecker['langdata']['results_listed'] .
                     '</span></td><td>' .
                     $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2] .
