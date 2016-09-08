@@ -190,27 +190,22 @@ function SFSMassIPCheckerSortIPv4($IPAddrA, $IPAddrB) {
             $IPAddrB = (int)$IPAddrB;
             if ($IPAddrA === $IPAddrB) {
                 return 0;
-            } else {
-                return ($IPAddrA > $IPAddrB) ? 1 : -1;
             }
-        } else {
-            return 1;
+            return ($IPAddrA > $IPAddrB) ? 1 : -1;
         }
-    } else {
-        if ($BPos === false) {
-            return -1;
-        } else {
-            $SegA = (int)substr($IPAddrA, 0, $APos);
-            $SegB = (int)substr($IPAddrB, 0, $BPos);
-            if ($SegA === $SegB) {
-                $IPAddrA = substr($IPAddrA, ($APos + 1));
-                $IPAddrB = substr($IPAddrB, ($BPos + 1));
-                return SFSMassIPCheckerSortIPv4($IPAddrA, $IPAddrB);
-            } else {
-                return ($SegA > $SegB) ? 1 : -1;
-            }
-        }
+        return 1;
     }
+    if ($BPos === false) {
+        return -1;
+    }
+    $SegA = (int)substr($IPAddrA, 0, $APos);
+    $SegB = (int)substr($IPAddrB, 0, $BPos);
+    if ($SegA === $SegB) {
+        $IPAddrA = substr($IPAddrA, ($APos + 1));
+        $IPAddrB = substr($IPAddrB, ($BPos + 1));
+        return SFSMassIPCheckerSortIPv4($IPAddrA, $IPAddrB);
+    }
+    return ($SegA > $SegB) ? 1 : -1;
 }
 
 /**
