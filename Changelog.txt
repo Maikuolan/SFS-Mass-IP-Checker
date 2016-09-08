@@ -15,7 +15,20 @@ entries will be deleted when those goals have been achieved.
 
 === Changes made since last versioned release ===
 
-(none)
+- [2016.09.08; Bug-fixes; Maikuolan]: IPs weren't being sorted in the correct
+  order; Fixed. Some certain combinations of IPs entered to be looked up using
+  the API would sometimes produce offset errors; Fixed. Some certain
+  combinations of IPs entered to be looked up using the API would sometimes
+  produce a number of entries in the results table without any corresponding
+  IPs, giving the appearance of large, empty segments in the results table;
+  Fixed. Found a bug whereby some necessary API lookups would not occur if the
+  final IP to be checked already had results cached from a previous lookup and
+  if the sum total of remaining IPs to be looked up using the API was less than
+  14 (obscure but problematic bug; many thanks to dev-101 for posting the issue
+  resulting in the investigation and consequent fix for this bug); Fixed.
+
+- [2016.09.08; Sub-minor code change; Maikuolan]: Improved the mechanism for
+  checking the validity of IPv4 addresses prior to performing API lookups.
 
 === Version/Release 0.1.2 ===
 PATCH RELEASE.

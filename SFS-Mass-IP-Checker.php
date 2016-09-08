@@ -177,6 +177,43 @@ if (!function_exists('is_serialized')) {
 }
 
 /**
+ * Correctly sort the order of an array of IPv4 addresses.
+ *
+ * See: http://php.net/manual/en/function.usort.php
+ */
+function SFSMassIPCheckerSortIPv4($IPAddrA, $IPAddrB) {
+    $APos = strpos($IPAddrA, '.');
+    $BPos = strpos($IPAddrB, '.');
+    if ($APos === false) {
+        $IPAddrA = (int)$IPAddrA;
+        if ($BPos === false) {
+            $IPAddrB = (int)$IPAddrB;
+            if ($IPAddrA === $IPAddrB) {
+                return 0;
+            } else {
+                return ($IPAddrA > $IPAddrB) ? 1 : -1;
+            }
+        } else {
+            return 1;
+        }
+    } else {
+        if ($BPos === false) {
+            return -1;
+        } else {
+            $SegA = (int)substr($IPAddrA, 0, $APos);
+            $SegB = (int)substr($IPAddrB, 0, $BPos);
+            if ($SegA === $SegB) {
+                $IPAddrA = substr($IPAddrA, ($APos + 1));
+                $IPAddrB = substr($IPAddrB, ($BPos + 1));
+                return SFSMassIPCheckerSortIPv4($IPAddrA, $IPAddrB);
+            } else {
+                return ($SegA > $SegB) ? 1 : -1;
+            }
+        }
+    }
+}
+
+/**
  * This is the main function of the SFS Mass IP Checker responsible for
  * actually handling the IPs to be checked and for checking them against SFS.
  *
@@ -216,7 +253,7 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
         }
         if (!$PreChecked) {
             $IPAddr = array_unique($IPAddr);
-            sort($IPAddr);
+            usort($IPAddr, 'SFSMassIPCheckerSortIPv4');
         }
         reset($IPAddr);
         $c = count($IPAddr);
@@ -267,22 +304,32 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
         if (substr_count($GLOBALS['SFSMassIPChecker']['erroneous'], ',' . $IPAddr . ',')) {
             return $IPAddr . ',' . $GLOBALS['SFSMassIPChecker']['langdata']['erroneous_local'] . ',!';
         }
+        if (
+            !preg_match(
+                '/^([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([01]?[0-9]{1,2}|2[0-4][0-9]|2' .
+                '5[0-5])\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([01]?[0-9]{1,2}|2[0-4]' .
+                '[0-9]|25[0-5])$/i', $IPAddr
+            )
+        ) {
+            return $IPAddr . ',' . $GLOBALS['SFSMassIPChecker']['langdata']['failure_badip'] . ',!';
+        }
         return false;
     }
-    if ($IPAddr !== false) {
+    if ($IPAddr !== false && !$Final) {
         return $IPAddr;
     }
-    if (!isset($GLOBALS['SFSMassIPChecker']['PostChecked'][$EntryID])) {
-        return false;
+    if (!$IPAddr) {
+        $IPAddr = $GLOBALS['SFSMassIPChecker']['PostChecked'][$EntryID];
+        if (!empty($GLOBALS['SFSMassIPChecker']['BulkQuery'])) {
+            $GLOBALS['SFSMassIPChecker']['BulkQuery'] .= '&';
+        }
+        $GLOBALS['SFSMassIPChecker']['BulkQuery'] .= 'ip[]=' . urlencode($IPAddr);
+        $GLOBALS['SFSMassIPChecker']['BulkResults'][$GLOBALS['SFSMassIPChecker']['BulkIntID']] = $EntryID;
+        $GLOBALS['SFSMassIPChecker']['BulkIntID']++;
+        $IPAddr = false;
     }
-    $IPAddr = $GLOBALS['SFSMassIPChecker']['PostChecked'][$EntryID];
-    if (!empty($GLOBALS['SFSMassIPChecker']['BulkQuery'])) {
-        $GLOBALS['SFSMassIPChecker']['BulkQuery'] .= '&';
-    }
-    $GLOBALS['SFSMassIPChecker']['BulkQuery'] .= 'ip[]=' . urlencode($IPAddr);
-    $GLOBALS['SFSMassIPChecker']['BulkResults'][$GLOBALS['SFSMassIPChecker']['BulkIntID']] = $EntryID;
-    $GLOBALS['SFSMassIPChecker']['BulkIntID']++;
-    if ($Final || $GLOBALS['SFSMassIPChecker']['BulkIntID'] > 14) {
+    $Output = array();
+    if (($Final && $GLOBALS['SFSMassIPChecker']['BulkIntID'] > 0) || $GLOBALS['SFSMassIPChecker']['BulkIntID'] > 14) {
         $Context = stream_context_create(array(
             'http' => array(
                 'method' => 'POST',
@@ -299,7 +346,9 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
         );
         $GLOBALS['SFSMassIPChecker']['BulkProcMe'] = true;
         $GLOBALS['SFSMassIPChecker']['BulkQuery'] = '';
-        $GLOBALS['SFSMassIPChecker']['BulkIntID'] = 0;
+        if ($IPAddr === false) {
+            $GLOBALS['SFSMassIPChecker']['BulkIntID'] = 0;
+        }
         $GLOBALS['SFSMassIPChecker']['Counter']++;
         /** Throw an exception if results aren't serialised. */
         if (!is_serialized($Results)) {
@@ -320,7 +369,6 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
             throw new \Exception(3);
         }
         $c = count($Results['ip']);
-        $Output = array();
         for($i = 0; $i < $c; $i++) {
             if (isset($Results['ip'][$i]['appears'])) {
                 $Results['ip'][$i]['appears'] = $GLOBALS['SFSMassIPChecker']['langdata']['success_remote'];
@@ -339,9 +387,16 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
             }
             $Output[$i] = $Results['ip'][$i]['value'] . ',' . $Results['ip'][$i]['appears'] . ',' . $Results['ip'][$i]['frequency'];
         }
-        return $Output;
     }
-    return false;
+    if ($IPAddr !== false) {
+        if (!$GLOBALS['SFSMassIPChecker']['BulkProcMe']) {
+            return $IPAddr;
+        }
+        $GLOBALS['SFSMassIPChecker']['BulkResults'][$GLOBALS['SFSMassIPChecker']['BulkIntID']] = $EntryID;
+        $i = count($Output);
+        $Output[$i] = $IPAddr;
+    }
+    return $Output;
 }
 
 /**
@@ -477,8 +532,6 @@ $SFSMassIPChecker['PageBody'] =
  */
 if (!empty($SFSMassIPChecker['IPAddr'])) {
 
-    $SFSMassIPChecker['IPAddr'] =
-        preg_replace('/[^,\n0-9\.]/', '', $SFSMassIPChecker['IPAddr']);
     $SFSMassIPChecker['IPAddr'] =
         preg_split('/[,\n\r]+/', $SFSMassIPChecker['IPAddr'], -1, PREG_SPLIT_NO_EMPTY);
     $SFSMassIPChecker['bannedips'] =
