@@ -20,7 +20,7 @@ parse_str($_SERVER['QUERY_STRING'], $query);
 
 /** Define basic script variables. */
 $SFSMassIPChecker = array(
-    'ScriptVersion' => '0.1.2',
+    'ScriptVersion' => '0.1.3-DEV',
     'UserIPAddr' => $_SERVER['REMOTE_ADDR'],
     'CacheModified' => false,
     'Limit' => 9999,
@@ -462,10 +462,11 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/bannedips.csv')) {
 $SFSMassIPChecker['PageBody'] =
     '<form action="" method="POST" name="SFSMassIPChecker"><center>' .
     $SFSMassIPChecker['langdata']['separate_entries'] . '<br /><br /><textar' .
-    'ea name="IPAddr" id="IPAddr" style="width:98%;height:100px;"></textarea' .
-    '><br /><br /><input style="font-family:\'Lucida Grande\',Tahoma,Verdana' .
-    ',Arial,MingLiU;font-size:10px;letter-spacing:1px;text-align:center;text' .
-    '-decoration:none;color:#333" type="submit" value="' .
+    'ea name="IPAddr" id="IPAddr" style="width:98%;height:100px;">' .
+    $SFSMassIPChecker['IPAddr'] .
+    '</textarea><br /><br /><input style="font-family:\'Lucida Grande\',Taho' .
+    'ma,Verdana,Arial,MingLiU;font-size:10px;letter-spacing:1px;text-decorat' .
+    'ion:none;color:#333" type="submit" value="' .
     $SFSMassIPChecker['langdata']['input_submit'] . '" /></center></form>';
 
 /**
@@ -493,7 +494,7 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
         $SFSMassIPChecker['Results'] =
             SFSMassIPCheckerCheckIP($SFSMassIPChecker['IPAddr']);
     } catch (\Exception $e) {
-        $SFSMassIPChecker['Error'] = $e->getMessage();
+        $SFSMassIPChecker['Error'] = (int)$e->getMessage();
     }
     unset(
         $e,
@@ -533,12 +534,11 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
     }
 
     $SFSMassIPChecker['PageBody'] .=
-        '<hr /><center><table style="width:500px;text-align:center;"><tr><td><strong>' .
-        $SFSMassIPChecker['langdata']['table_ip_address'] . '</strong></td><td><stron' .
-        'g>' . $SFSMassIPChecker['langdata']['table_lookup_status'] . '</strong></td>' .
-        '<td><strong>' . $SFSMassIPChecker['langdata']['table_spammer'] . '</strong><' .
-        '/td><td><strong>' . $SFSMassIPChecker['langdata']['table_frequency'] .
-        '</strong></td></tr>';
+        '<hr /><center><table style="width:500px;text-align:center"><tr><td class="s">' .
+        $SFSMassIPChecker['langdata']['table_ip_address'] . '</td><td class="s">' .
+        $SFSMassIPChecker['langdata']['table_lookup_status'] . '</td><td class="s">' .
+        $SFSMassIPChecker['langdata']['table_spammer'] . '</td><td class="s">' .
+        $SFSMassIPChecker['langdata']['table_frequency'] . '</td></tr>';
 
     reset($SFSMassIPChecker['Results']);
 
@@ -549,46 +549,54 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
         $SFSMassIPChecker['i'] < $SFSMassIPChecker['c'];
         $SFSMassIPChecker['i']++
     ) {
-        $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']] =
-            explode(',', $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']]);
-        if ($SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2] === '0') {
+        $SFSMassIPChecker['key'] = key($SFSMassIPChecker['Results']);
+        if (strpos($SFSMassIPChecker['Results'][$SFSMassIPChecker['key']], ',') === false) {
+            continue;
+        }
+        $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']] =
+            explode(',', $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']]);
+        if (count($SFSMassIPChecker['Results'][$SFSMassIPChecker['key']]) !== 3) {
+            continue;
+        }
+        if ($SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] === '0') {
             $SFSMassIPChecker['PageBody'] .=
                 '<tr><td><a href="http://www.stopforumspam.com/ipcheck/' .
-                $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0] .
+                $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
                 '">' .
-                $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0] .
+                $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
                 '</a></td><td>' .
-                $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1] .
+                $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][1] .
                 '</td><td><span style="color:#090">' .
                 $SFSMassIPChecker['langdata']['results_not_listed'] .
                 '</span></td><td>' .
-                $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2] .
+                $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] .
                 '</td></tr>';
         } else {
             $SFSMassIPChecker['PageBody'] .=
-                ($SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2] === '!') ?
+                ($SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] === '!') ?
                     '<tr><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0] .
+                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
                     '</td><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1] .
+                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][1] .
                     '</td><td><span style="color:#f80">' .
                     $SFSMassIPChecker['langdata']['results_erroneous'] .
                     '</span></td><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2] .
+                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] .
                     '</td></tr>'
                 :
                     '<tr><td><a href="http://www.stopforumspam.com/ipcheck/' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0] .
+                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
                     '">' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][0] .
+                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
                     '</a></td><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][1] .
+                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][1] .
                     '</td><td><span style="color:#900">' .
                     $SFSMassIPChecker['langdata']['results_listed'] .
                     '</span></td><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['i']][2] .
+                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] .
                     '</td></tr>';
         }
+        next($SFSMassIPChecker['Results']);
     }
     unset($SFSMassIPChecker['Results']);
     $SFSMassIPChecker['PageBody'] .= '</table></center>';
