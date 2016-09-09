@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Core script file (last modified: 2016.09.08).
+ * This file: Core script file (last modified: 2016.09.10).
  *
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -96,7 +96,7 @@ function ParseTemplate($pagedata) {
     $arr = $GLOBALS['SFSMassIPChecker']['langdata'];
     reset($arr);
     $c = count($arr);
-    for($i = 0; $i < $c; $i++) {
+    for ($i = 0; $i < $c; $i++) {
         $k = key($arr);
         $template = str_replace('{' . $k . '}', $arr[$k], $template);
         next($arr);
@@ -177,38 +177,6 @@ if (!function_exists('is_serialized')) {
 }
 
 /**
- * Correctly sort the order of an array of IPv4 addresses.
- *
- * See: http://php.net/manual/en/function.usort.php
- */
-function SFSMassIPCheckerSortIPv4($IPAddrA, $IPAddrB) {
-    $APos = strpos($IPAddrA, '.');
-    $BPos = strpos($IPAddrB, '.');
-    if ($APos === false) {
-        $IPAddrA = (int)$IPAddrA;
-        if ($BPos === false) {
-            $IPAddrB = (int)$IPAddrB;
-            if ($IPAddrA === $IPAddrB) {
-                return 0;
-            }
-            return ($IPAddrA > $IPAddrB) ? 1 : -1;
-        }
-        return 1;
-    }
-    if ($BPos === false) {
-        return -1;
-    }
-    $SegA = (int)substr($IPAddrA, 0, $APos);
-    $SegB = (int)substr($IPAddrB, 0, $BPos);
-    if ($SegA === $SegB) {
-        $IPAddrA = substr($IPAddrA, ($APos + 1));
-        $IPAddrB = substr($IPAddrB, ($BPos + 1));
-        return SFSMassIPCheckerSortIPv4($IPAddrA, $IPAddrB);
-    }
-    return ($SegA > $SegB) ? 1 : -1;
-}
-
-/**
  * This is the main function of the SFS Mass IP Checker responsible for
  * actually handling the IPs to be checked and for checking them against SFS.
  *
@@ -248,11 +216,11 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
         }
         if (!$PreChecked) {
             $IPAddr = array_unique($IPAddr);
-            usort($IPAddr, 'SFSMassIPCheckerSortIPv4');
+            natsort($IPAddr);
         }
         reset($IPAddr);
         $c = count($IPAddr);
-        for($i = 0; $i < $c; $i++) {
+        for ($i = 0; $i < $c; $i++) {
             $k = key($IPAddr);
             $Final = ($i + 1 === $c);
             if (!$PreChecked) {
@@ -266,7 +234,7 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
             }
             if ($GLOBALS['SFSMassIPChecker']['BulkProcMe']) {
                 $ic = count($IPAddr[$k]);
-                for($ii = 0; $ii < $ic; $ii++) {
+                for ($ii = 0; $ii < $ic; $ii++) {
                     $IPAddr[$GLOBALS['SFSMassIPChecker']['BulkResults'][$ii]] = $IPAddr[$k][$ii];
                 }
                 $GLOBALS['SFSMassIPChecker']['BulkResults'] = array();
@@ -299,14 +267,11 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
         if (substr_count($GLOBALS['SFSMassIPChecker']['erroneous'], ',' . $IPAddr . ',')) {
             return $IPAddr . ',' . $GLOBALS['SFSMassIPChecker']['langdata']['erroneous_local'] . ',!';
         }
-        if (
-            !preg_match(
-                '/^([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([01]?[0-9]{1,2}|2[0-4][0-9]|2' .
-                '5[0-5])\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([01]?[0-9]{1,2}|2[0-4]' .
-                '[0-9]|25[0-5])$/i', $IPAddr
-            )
-        ) {
+        if (filter_var($IPAddr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
             return $IPAddr . ',' . $GLOBALS['SFSMassIPChecker']['langdata']['failure_badip'] . ',!';
+        }
+        if (filter_var($IPAddr, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            return $IPAddr . ',' . $GLOBALS['SFSMassIPChecker']['langdata']['failure_private'] . ',!';
         }
         return false;
     }
@@ -350,13 +315,13 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
             if (substr_count($Results, 'request not understood')) {
                 /** The API didn't understand the request. */
                 throw new \Exception(1);
-            } elseif (!$Results) {
+            }
+            if (!$Results) {
                 /** There weren't any results (the request might've timed-out). */
                 throw new \Exception(2);
-            } else {
-                /** Some other error or problem occurred. */
-                throw new \Exception(3);
             }
+            /** Some other error or problem occurred. */
+            throw new \Exception(3);
         }
         $Results = unserialize($Results);
         if (!isset($Results['success']) || !isset($Results['ip'])) {
@@ -364,7 +329,7 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
             throw new \Exception(3);
         }
         $c = count($Results['ip']);
-        for($i = 0; $i < $c; $i++) {
+        for ($i = 0; $i < $c; $i++) {
             if (isset($Results['ip'][$i]['appears'])) {
                 $Results['ip'][$i]['appears'] = $GLOBALS['SFSMassIPChecker']['langdata']['success_remote'];
             } else {
@@ -592,7 +557,7 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
 
     $SFSMassIPChecker['c'] = count($SFSMassIPChecker['Results']);
 
-    for(
+    for (
         $SFSMassIPChecker['i'] = 0;
         $SFSMassIPChecker['i'] < $SFSMassIPChecker['c'];
         $SFSMassIPChecker['i']++

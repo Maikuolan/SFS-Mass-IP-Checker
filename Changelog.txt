@@ -24,11 +24,13 @@ entries will be deleted when those goals have been achieved.
   Fixed. Found a bug whereby some necessary API lookups would not occur if the
   final IP to be checked already had results cached from a previous lookup and
   if the sum total of remaining IPs to be looked up using the API was less than
-  14 (obscure but problematic bug; many thanks to dev-101 for posting the issue
+  15 (obscure but problematic bug; many thanks to dev-101 for posting the issue
   resulting in the investigation and consequent fix for this bug); Fixed.
 
-- [2016.09.08; Sub-minor code change; Maikuolan]: Improved the mechanism for
+- [2016.09.10; Sub-minor code change; Maikuolan]: Improved the mechanism for
   checking the validity of IPv4 addresses prior to performing API lookups.
+  Added filter for private and reserved IP addresses to prevent unnecessary
+  lookups.
 
 === Version/Release 0.1.2 ===
 PATCH RELEASE.

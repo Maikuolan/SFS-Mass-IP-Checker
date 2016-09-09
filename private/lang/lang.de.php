@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: German language data (last modified: 2016.09.08).
+ * This file: German language data (last modified: 2016.09.10).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -23,7 +23,8 @@ $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Lade eine aktuelle Kopie v
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Kann "%PATH%/private/bannedips.csv" nicht finden!<br />Bitte laden Sie diese manuell runter von:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Nach dem Download entpacken Sie die Datei in das \'private\' Verzeichnis vom SFS Mass IP Checker und versuchen Sie es dann erneut.<br /><br />(( Wir verwenden diese Datei um unnötig viele Anfragen an den Server zu verhindern ))';
 $SFSMassIPChecker['langdata']['cant_write'] = 'Kann Cache nicht schreiben!<br />Bitte überprüfen Sie Ihre CHMOD-Dateirechte!';
 $SFSMassIPChecker['langdata']['erroneous_local'] = 'Fehlerhaft (Lokal).';
-$SFSMassIPChecker['langdata']['failure_badip'] = 'Fehlfunktion (ungültig IP-Adresse)!';
+$SFSMassIPChecker['langdata']['failure_badip'] = 'Ungültig IP-Adresse!';
+$SFSMassIPChecker['langdata']['failure_private'] = 'Lokal/Privat IP-Address!';
 $SFSMassIPChecker['langdata']['failure_notunderstood'] = 'Fehlfunktion (Anfrage nicht verstanden von SFS)!';
 $SFSMassIPChecker['langdata']['failure_timeout'] = 'Fehlfunktion (Anfrage-Fehler oder Zeitlimit)!';
 $SFSMassIPChecker['langdata']['failure_unknown'] = 'Ein unbekannter Fehler ist aufgetreten.';
