@@ -22,7 +22,6 @@ $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Загрузка свеж�
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Не может найти "%PATH%/private/bannedips.csv"!<br />Вы можете скачать вручную:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />После загрузки, распаковки содержимого файла в \'private\' папка из SFS Mass IP Checker, а затем повторите попытку.<br /><br />(( Мы используем этот файл чтобы избежать необходимости внесения излишне большое количество запросов к серверу. ))';
 $SFSMassIPChecker['langdata']['cant_write'] = 'Невозможно записать в кэш!<br />Пожалуйста проверьте CHMOD!';
 $SFSMassIPChecker['langdata']['erroneous_local'] = 'Ошибочный (Локальное).';
-$SFSMassIPChecker['langdata']['failure_badip'] = 'Не успех (инвалид IP-адрес)!';
 $SFSMassIPChecker['langdata']['failure_badip'] = 'Неверный IP-адрес!';
 $SFSMassIPChecker['langdata']['failure_private'] = 'Локальный/Личный IP-адрес!';
 $SFSMassIPChecker['langdata']['failure_notunderstood'] = 'Не успех (запрос не понял SFS)!';

@@ -23,7 +23,6 @@ $SFSMassIPChecker['langdata']['bannedips_missing'] = 'SFS（エス・エフ・�
 $SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = '"%PATH%/private/bannedips.csv"が見つかりません！<br />こちらから手動でダウンロードして下さい。：<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />ダウンロード後、ファイルを SFS Mass IP Checker（エス・エフ・エス・マス・アイピーチェッカー）の\'private\'ディレクトリに解凍し、再度試して下さい。<br /><br />（（サーバーに過度の負担がかかるのを避けるため、このファイルを利用しています。））';
 $SFSMassIPChecker['langdata']['cant_write'] = 'キャッシュを書き込むことができません！<br />CHMODファイルのパーミッションをチェックして下さい！';
 $SFSMassIPChecker['langdata']['erroneous_local'] = '誤りがあります（ローカル）。';
-$SFSMassIPChecker['langdata']['failure_badip'] = '失敗（不正IPアドレス）！';
 $SFSMassIPChecker['langdata']['failure_badip'] = '無効なIPアドレス！';
 $SFSMassIPChecker['langdata']['failure_private'] = 'ローカル/プライベートIPアドレス！';
 $SFSMassIPChecker['langdata']['failure_notunderstood'] = '失敗（SFSはリクエストを理解できません）！';
