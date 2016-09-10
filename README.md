@@ -21,6 +21,6 @@ To install the SFS Mass IP Checker, all you need to do is upload it to a server 
 - __[phpMussel](http://maikuolan.github.io/phpMussel/):__ PHP-based anti-virus anti-trojan anti-malware solution (created by the same author as this script).
 - __[CIDRAM](http://maikuolan.github.io/CIDRAM/):__ Classless Inter-Domain Routing Access Manager (created by the same author as this script).
 
-*Codebase version cited at the time of the latest commit was "0.1.2".*
+*Codebase version cited at the time of the latest commit was "0.1.3".*
 
-*This file, "README.md", last edited: 10th August 2016 (2016.08.10).*
+*This file, "README.md", last edited: 10th September 2016 (2016.09.10).*

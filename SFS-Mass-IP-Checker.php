@@ -20,7 +20,7 @@ parse_str($_SERVER['QUERY_STRING'], $query);
 
 /** Define basic script variables. */
 $SFSMassIPChecker = array(
-    'ScriptVersion' => '0.1.3-DEV',
+    'ScriptVersion' => '0.1.3',
     'UserIPAddr' => $_SERVER['REMOTE_ADDR'],
     'CacheModified' => false,
     'Limit' => 9999,
@@ -477,11 +477,9 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/bannedips.csv')) {
 $SFSMassIPChecker['PageBody'] =
     '<form action="" method="POST" name="SFSMassIPChecker"><center>' .
     $SFSMassIPChecker['langdata']['separate_entries'] . '<br /><br /><textar' .
-    'ea name="IPAddr" id="IPAddr" style="width:98%;height:100px;">' .
+    'ea name="IPAddr" id="IPAddr" style="width:98%;height:100px">' .
     $SFSMassIPChecker['IPAddr'] .
-    '</textarea><br /><br /><input style="font-family:\'Lucida Grande\',Taho' .
-    'ma,Verdana,Arial,MingLiU;font-size:10px;letter-spacing:1px;text-decorat' .
-    'ion:none;color:#333" type="submit" value="' .
+    '</textarea><br /><br /><input type="submit" value="' .
     $SFSMassIPChecker['langdata']['input_submit'] . '" /></center></form>';
 
 /**
