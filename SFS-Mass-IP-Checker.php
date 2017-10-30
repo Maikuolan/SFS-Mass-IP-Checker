@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Core script file (last modified: 2016.09.10).
+ * This file: Core script file (last modified: 2017.10.31).
  *
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -38,70 +38,63 @@ $SFSMassIPChecker['UserAgent'] =
     $SFSMassIPChecker['UserIPAddr'];
 
 /** Fetch submitted IPs. */
-$SFSMassIPChecker['IPAddr'] =
-    (!empty($_POST['IPAddr'])) ? $_POST['IPAddr'] : (
-        (!empty($query['IPAddr'])) ? $query['IPAddr'] : ''
-    );
+$SFSMassIPChecker['IPAddr'] = !empty($_POST['IPAddr']) ? $_POST['IPAddr'] : (
+    !empty($query['IPAddr']) ? $query['IPAddr'] : ''
+);
 
 /** Fetch language selection. */
-$SFSMassIPChecker['lang'] =
-    (!empty($_POST['lang'])) ? strtolower($_POST['lang']) : (
-        (!empty($query['lang'])) ? strtolower($query['lang']) : false
-    );
+$SFSMassIPChecker['lang'] = !empty($_POST['lang']) ? strtolower($_POST['lang']) : (
+    !empty($query['lang']) ? strtolower($query['lang']) : false
+);
 
 /**
  * Reads and returns the contents of files.
  *
- * @param string $f Path and filename of the file to read.
- * @return string Content of the file returned by the function.
+ * @param string $File Path and filename of the file to read.
+ * @return string|bool Content of the file returned by the function or false.
  */
-function SFSMassIPCheckerFileFetcher($f) {
-    if (!is_file($f)) {
+function SFSMassIPCheckerFileFetcher($File) {
+    if (!is_file($File) || !is_readable($File)) {
         return false;
     }
-    $s = @ceil(filesize($f) / 49152);
-    $d = '';
+    if ($s = filesize($File) ?: 0) {
+        $s = ceil($s / 49152);
+    }
+    $Data = '';
     if ($s > 0) {
-        $fh = fopen($f, 'rb');
+        $Handle = fopen($File, 'rb');
         $r = 0;
         while ($r < $s) {
-            $d .= fread($fh, 49152);
+            $Data .= fread($Handle, 49152);
             $r++;
         }
-        fclose($fh);
+        fclose($Handle);
     }
-    return (!empty($d)) ? $d : false;
+    return !empty($Data) ? $Data : false;
 }
 
 /**
  * Parses the `template.html` file and is responsible for the page output to
  * the browser.
  *
- * @param string|array $pagedata Data variables to be parsed into the
+ * @param string|array $PageData Data variables to be parsed into the
  *      `template.html` by the function.
  * @return string Parsed `template.html` data to be used for page output.
  */
-function ParseTemplate($pagedata) {
-    $template = SFSMassIPCheckerFileFetcher($GLOBALS['SFSMassIPChecker']['Path'] . '/private/template.html');
-    if (is_array($pagedata)) {
-        $c = count($pagedata);
-        for ($i = 0; $i < $c; $i++) {
-            $k = key($pagedata);
-            $template = str_replace('{' . $k . '}', $pagedata[$k], $template);
-            next($pagedata);
+function ParseTemplate($PageData) {
+    $Template = SFSMassIPCheckerFileFetcher($GLOBALS['SFSMassIPChecker']['Path'] . '/private/template.html');
+    if (is_array($PageData)) {
+        foreach ($PageData as $Key => $Value) {
+            $Template = str_replace('{' . $Key . '}', $Value, $Template);
         }
-    } elseif (!empty($pagedata)) {
-        $template = str_replace('{pagedata}', $pagedata, $template);
+    } elseif (!empty($PageData)) {
+        $Template = str_replace('{pagedata}', $PageData, $Template);
     }
-    $arr = $GLOBALS['SFSMassIPChecker']['langdata'];
-    reset($arr);
-    $c = count($arr);
-    for ($i = 0; $i < $c; $i++) {
-        $k = key($arr);
-        $template = str_replace('{' . $k . '}', $arr[$k], $template);
-        next($arr);
+    $Arr = $GLOBALS['SFSMassIPChecker']['langdata'];
+    foreach ($Arr as $Key => $Value) {
+        $Template = str_replace('{' . $Key . '}', $Value, $Template);
     }
-    return $template;
+    return $Template;
 }
 
 /** Caching stuff. */
@@ -490,8 +483,7 @@ $SFSMassIPChecker['PageBody'] =
  */
 if (!empty($SFSMassIPChecker['IPAddr'])) {
 
-    $SFSMassIPChecker['IPAddr'] =
-        preg_split('/[,\n\r]+/', $SFSMassIPChecker['IPAddr'], -1, PREG_SPLIT_NO_EMPTY);
+    $SFSMassIPChecker['IPAddr'] = preg_split('/[,\n\r]+/', $SFSMassIPChecker['IPAddr'], -1, PREG_SPLIT_NO_EMPTY);
     $SFSMassIPChecker['bannedips'] =
         SFSMassIPCheckerFileFetcher($SFSMassIPChecker['Path'] . '/private/bannedips.csv');
     $SFSMassIPChecker['BulkResults'] =
@@ -499,8 +491,7 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
     $SFSMassIPChecker['BulkQuery'] = '';
     $SFSMassIPChecker['Error'] =
     $SFSMassIPChecker['BulkIntID'] = 0;
-    $e =
-    $SFSMassIPChecker['BulkProcMe'] = false;
+    $e = $SFSMassIPChecker['BulkProcMe'] = false;
     try {
         $SFSMassIPChecker['Results'] =
             SFSMassIPCheckerCheckIP($SFSMassIPChecker['IPAddr']);
@@ -555,61 +546,47 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
 
     $SFSMassIPChecker['c'] = count($SFSMassIPChecker['Results']);
 
-    for (
-        $SFSMassIPChecker['i'] = 0;
-        $SFSMassIPChecker['i'] < $SFSMassIPChecker['c'];
-        $SFSMassIPChecker['i']++
-    ) {
-        $SFSMassIPChecker['key'] = key($SFSMassIPChecker['Results']);
-        if (strpos($SFSMassIPChecker['Results'][$SFSMassIPChecker['key']], ',') === false) {
+    foreach ($SFSMassIPChecker['Results'] as &$SFSMassIPChecker['TheseResults']) {
+        if (strpos($SFSMassIPChecker['TheseResults'], ',') === false) {
             continue;
         }
-        $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']] =
-            explode(',', $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']]);
-        if (count($SFSMassIPChecker['Results'][$SFSMassIPChecker['key']]) !== 3) {
+        $SFSMassIPChecker['TheseResults'] = explode(',', $SFSMassIPChecker['TheseResults']);
+        if (count($SFSMassIPChecker['TheseResults']) !== 3) {
             continue;
         }
-        if ($SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] === '0') {
-            $SFSMassIPChecker['PageBody'] .=
-                '<tr><td><a href="http://www.stopforumspam.com/ipcheck/' .
-                $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
-                '">' .
-                $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
-                '</a></td><td>' .
-                $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][1] .
-                '</td><td><span style="color:#090">' .
-                $SFSMassIPChecker['langdata']['results_not_listed'] .
-                '</span></td><td>' .
-                $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] .
-                '</td></tr>';
+        if ($SFSMassIPChecker['TheseResults'][2] === '0') {
+            $SFSMassIPChecker['PageBody'] .= sprintf(
+                '<tr><td><a href="http://www.stopforumspam.com/ipcheck/%1$s">%1$s</a></td>' .
+                '<td>%2$s</td><td><span style="color:#090">%3$s</span></td>' .
+                '<td>%4$s</td></tr>',
+                $SFSMassIPChecker['TheseResults'][0],
+                $SFSMassIPChecker['TheseResults'][1],
+                $SFSMassIPChecker['langdata']['results_not_listed'],
+                $SFSMassIPChecker['TheseResults'][2]
+            );
         } else {
-            $SFSMassIPChecker['PageBody'] .=
-                ($SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] === '!') ?
-                    '<tr><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
-                    '</td><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][1] .
-                    '</td><td><span style="color:#f80">' .
-                    $SFSMassIPChecker['langdata']['results_erroneous'] .
-                    '</span></td><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] .
-                    '</td></tr>'
-                :
-                    '<tr><td><a href="http://www.stopforumspam.com/ipcheck/' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
-                    '">' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][0] .
-                    '</a></td><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][1] .
-                    '</td><td><span style="color:#900">' .
-                    $SFSMassIPChecker['langdata']['results_listed'] .
-                    '</span></td><td>' .
-                    $SFSMassIPChecker['Results'][$SFSMassIPChecker['key']][2] .
-                    '</td></tr>';
+            $SFSMassIPChecker['PageBody'] .= (
+                $SFSMassIPChecker['TheseResults'][2] === '!'
+            ) ? sprintf(
+                '<tr><td>%1$s</td>' .
+                '<td>%2$s</td><td><span style="color:#f80">%3$s</span></td>' .
+                '<td>%4$s</td></tr>',
+                $SFSMassIPChecker['TheseResults'][0],
+                $SFSMassIPChecker['TheseResults'][1],
+                $SFSMassIPChecker['langdata']['results_erroneous'],
+                $SFSMassIPChecker['TheseResults'][2]
+            ) : sprintf(
+                '<tr><td><a href="http://www.stopforumspam.com/ipcheck/%1$s">%1$s</a></td>' .
+                '<td>%2$s</td><td><span style="color:#900">%3$s</span></td>' .
+                '<td>%4$s</td></tr>',
+                $SFSMassIPChecker['TheseResults'][0],
+                $SFSMassIPChecker['TheseResults'][1],
+                $SFSMassIPChecker['langdata']['results_listed'],
+                $SFSMassIPChecker['TheseResults'][2]
+            );
         }
-        next($SFSMassIPChecker['Results']);
     }
-    unset($SFSMassIPChecker['Results']);
+    unset($SFSMassIPChecker['TheseResults'], $SFSMassIPChecker['Results']);
     $SFSMassIPChecker['PageBody'] .= '</table></center>';
     if ($SFSMassIPChecker['Cache']['Counter'] !== $SFSMassIPChecker['Counter']) {
         $SFSMassIPChecker['CacheModified'] = true;
