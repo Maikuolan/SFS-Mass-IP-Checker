@@ -1,3 +1,6 @@
+[![PHP >= 5.3.0](https://img.shields.io/badge/PHP-%3E%3D%205.3.0-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 ## ![Stop Forum Spam Logo](https://raw.githubusercontent.com/Maikuolan/SFS-Mass-IP-Checker/master/public/sfs.gif) __SFS Mass IP Checker__
 
 A stand-alone script for checking IP addresses en-masse against the __[Stop Forum Spam](http://www.stopforumspam.com/)__ database.
