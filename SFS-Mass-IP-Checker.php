@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Core script file (last modified: 2017.10.31).
+ * This file: Core script file (last modified: 2018.02.24).
  *
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -99,7 +99,7 @@ function ParseTemplate($PageData) {
 
 /** Caching stuff. */
 if (!file_exists($SFSMassIPChecker['Path'] . '/private/cache.dat')) {
-    $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/cache.dat', 'w');
+    $Handle = fopen($SFSMassIPChecker['Path'] . '/private/cache.dat', 'w');
     $SFSMassIPChecker['Cache'] = array(
         'lang' => 'en',
         'Counter' => '0',
@@ -107,8 +107,8 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/cache.dat')) {
         'LastBlackReset' => $SFSMassIPChecker['Time'],
         'LastWhiteReset' => $SFSMassIPChecker['Time']
     );
-    fwrite($SFSMassIPChecker['handle'], serialize($SFSMassIPChecker['Cache']));
-    fclose($SFSMassIPChecker['handle']);
+    fwrite($Handle, serialize($SFSMassIPChecker['Cache']));
+    fclose($Handle);
     if (!file_exists($SFSMassIPChecker['Path'] . '/private/cache.dat')) {
         die(ParseTemplate($SFSMassIPChecker['langdata']['cant_write']));
     }
@@ -407,10 +407,10 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/bannedips.csv')) {
         die(ParseTemplate($SFSMassIPChecker['langdata']['bannedips_missing_cant_zip']));
     }
     echo
-        '<html><body onload="javascript:location.reload(true);"><p style="font-family' .
-        ':monospace;white-space:pre;">:: SFS-Mass-IP-Checker ::<br /><br />' .
+        '<html><body onload="javascript:location.reload(true)"><p style="font-family' .
+        ':monospace;white-space:pre">:: SFS-Mass-IP-Checker ::<br /><br />' .
         $SFSMassIPChecker['langdata']['bannedips_missing'] . '</p>';
-    $SFSMassIPChecker['handle'] = stream_context_create(array(
+    $Handle = stream_context_create(array(
         'http' => array(
             'method' => 'GET',
             'header' => 'Content-type: application/x-www-form-urlencoded; charset=iso-8859-1',
@@ -422,30 +422,30 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/bannedips.csv')) {
     $SFSMassIPChecker['stream'] = @file_get_contents(
         'http://www.stopforumspam.com/downloads/bannedips.zip',
         false,
-        $SFSMassIPChecker['handle']
+        $Handle
     );
-    $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/bannedips.zip', 'wb');
-    fwrite($SFSMassIPChecker['handle'], $SFSMassIPChecker['stream']);
-    fclose($SFSMassIPChecker['handle']);
+    $Handle = fopen($SFSMassIPChecker['Path'] . '/private/bannedips.zip', 'wb');
+    fwrite($Handle, $SFSMassIPChecker['stream']);
+    fclose($Handle);
     $SFSMassIPChecker['stream'] = zip_open($SFSMassIPChecker['Path'] . '/private/bannedips.zip');
     while(true) {
-        if (!$SFSMassIPChecker['handle'] = @zip_read($SFSMassIPChecker['stream'])) {
+        if (!$Handle = @zip_read($SFSMassIPChecker['stream'])) {
             break;
         }
-        if (zip_entry_name($SFSMassIPChecker['handle']) === 'bannedips.csv') {
+        if (zip_entry_name($Handle) === 'bannedips.csv') {
             $SFSMassIPChecker['ZipData'] =
-                @zip_entry_read($SFSMassIPChecker['handle'], zip_entry_filesize($SFSMassIPChecker['handle']));
+                @zip_entry_read($Handle, zip_entry_filesize($Handle));
         }
     }
     zip_close($SFSMassIPChecker['stream']);
     if (!empty($SFSMassIPChecker['ZipData'])) {
-        $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/bannedips.csv', 'w');
-        fwrite($SFSMassIPChecker['handle'], $SFSMassIPChecker['ZipData']);
-        fclose($SFSMassIPChecker['handle']);
+        $Handle = fopen($SFSMassIPChecker['Path'] . '/private/bannedips.csv', 'w');
+        fwrite($Handle, $SFSMassIPChecker['ZipData']);
+        fclose($Handle);
     } else {
-        $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/bannedips.csv', 'w');
-        fwrite($SFSMassIPChecker['handle'], ',');
-        fclose($SFSMassIPChecker['handle']);
+        $Handle = fopen($SFSMassIPChecker['Path'] . '/private/bannedips.csv', 'w');
+        fwrite($Handle, ',');
+        fclose($Handle);
     }
     /** Deletes the old "bannedips.zip", which we now no longer need. */
     unlink($SFSMassIPChecker['Path'] . '/private/bannedips.zip');
@@ -454,9 +454,9 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/bannedips.csv')) {
      * reloading).
      */
     if ($SFSMassIPChecker['CacheModified']) {
-        $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/cache.dat', 'w');
-        fwrite($SFSMassIPChecker['handle'], serialize($SFSMassIPChecker['Cache']));
-        fclose($SFSMassIPChecker['handle']);
+        $Handle = fopen($SFSMassIPChecker['Path'] . '/private/cache.dat', 'w');
+        fwrite($Handle, serialize($SFSMassIPChecker['Cache']));
+        fclose($Handle);
     }
     /**
      * We die here, so that we can reload everything with the correct data.
@@ -525,9 +525,9 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
 
         /** Save cache data to the cache. */
         if ($SFSMassIPChecker['CacheModified']) {
-            $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/cache.dat', 'w');
-            fwrite($SFSMassIPChecker['handle'], serialize($SFSMassIPChecker['Cache']));
-            fclose($SFSMassIPChecker['handle']);
+            $Handle = fopen($SFSMassIPChecker['Path'] . '/private/cache.dat', 'w');
+            fwrite($Handle, serialize($SFSMassIPChecker['Cache']));
+            fclose($Handle);
         }
 
         /** Prepare final page output and kill the script. */
@@ -543,8 +543,6 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
         $SFSMassIPChecker['langdata']['table_frequency'] . '</td></tr>';
 
     reset($SFSMassIPChecker['Results']);
-
-    $SFSMassIPChecker['c'] = count($SFSMassIPChecker['Results']);
 
     foreach ($SFSMassIPChecker['Results'] as &$SFSMassIPChecker['TheseResults']) {
         if (strpos($SFSMassIPChecker['TheseResults'], ',') === false) {
@@ -587,33 +585,34 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
         }
     }
     unset($SFSMassIPChecker['TheseResults'], $SFSMassIPChecker['Results']);
+
     $SFSMassIPChecker['PageBody'] .= '</table></center>';
     if ($SFSMassIPChecker['Cache']['Counter'] !== $SFSMassIPChecker['Counter']) {
         $SFSMassIPChecker['CacheModified'] = true;
         $SFSMassIPChecker['Cache']['Counter'] = $SFSMassIPChecker['Counter'];
     }
     if (!empty($SFSMassIPChecker['bannedipsAppend'])) {
-        $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/bannedips.csv', 'a');
-        fwrite($SFSMassIPChecker['handle'], $SFSMassIPChecker['bannedipsAppend']);
-        fclose($SFSMassIPChecker['handle']);
+        $Handle = fopen($SFSMassIPChecker['Path'] . '/private/bannedips.csv', 'a');
+        fwrite($Handle, $SFSMassIPChecker['bannedipsAppend']);
+        fclose($Handle);
     }
     if (!empty($SFSMassIPChecker['cleanAppend'])) {
-        $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/clean.csv', 'a');
-        fwrite($SFSMassIPChecker['handle'], $SFSMassIPChecker['cleanAppend']);
-        fclose($SFSMassIPChecker['handle']);
+        $Handle = fopen($SFSMassIPChecker['Path'] . '/private/clean.csv', 'a');
+        fwrite($Handle, $SFSMassIPChecker['cleanAppend']);
+        fclose($Handle);
     }
     if (!empty($SFSMassIPChecker['erroneousAppend'])) {
-        $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/erroneous.csv', 'a');
-        fwrite($SFSMassIPChecker['handle'], $SFSMassIPChecker['erroneousAppend']);
-        fclose($SFSMassIPChecker['handle']);
+        $Handle = fopen($SFSMassIPChecker['Path'] . '/private/erroneous.csv', 'a');
+        fwrite($Handle, $SFSMassIPChecker['erroneousAppend']);
+        fclose($Handle);
     }
 }
 
 /** Save cache data to the cache. */
 if ($SFSMassIPChecker['CacheModified']) {
-    $SFSMassIPChecker['handle'] = fopen($SFSMassIPChecker['Path'] . '/private/cache.dat', 'w');
-    fwrite($SFSMassIPChecker['handle'], serialize($SFSMassIPChecker['Cache']));
-    fclose($SFSMassIPChecker['handle']);
+    $Handle = fopen($SFSMassIPChecker['Path'] . '/private/cache.dat', 'w');
+    fwrite($Handle, serialize($SFSMassIPChecker['Cache']));
+    fclose($Handle);
 }
 
 /** Prepare final page output and kill the script. */

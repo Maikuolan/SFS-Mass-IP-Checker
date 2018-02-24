@@ -15,7 +15,10 @@ entries will be deleted when those goals have been achieved.
 
 === Changes made since last versioned release ===
 
-- [2016.10.06; Sub-minor code change; DailyMatters]: Improved Portuguese l10n.
+- [2016.10.06; Sub-minor code change; DailyMatters]: Improved Portuguese L10N.
+
+- [2018.02.24; Sub-minor code change; Maikuolan]: Fixed some broken links and
+  slightly refactored some of the codebase.
 
 === Version/Release 0.1.3 ===
 PATCH RELEASE.
@@ -54,7 +57,7 @@ PATCH RELEASE.
   template file and added an additional link to the "Useful Tools" menu
   [template.html]. Removed "@package" tags from the package (these aren't
   really required or useful in the context of this script). Minor refactoring
-  and code optimisation. Completed some previously incomplete i18n strings.
+  and code optimisation. Completed some previously incomplete L10N strings.
   Added language support for Vietnamese to the SFS Mass IP Checker
   [lang.vi.php].
 
