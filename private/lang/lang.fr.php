@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: French language data (last modified: 2016.09.10).
+ * This file: French language data (last modified: 2018.08.10).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -18,12 +18,12 @@ if(!defined('SFSMassIPChecker')) {
 
 $SFSMassIPChecker['langdata'] = array('xmlLang' => 'fr');
 
-$SFSMassIPChecker['langdata']['bannedips_missing'] = 'Téléchargement d\'une nouvelle copie de "bannedips.csv" du SFS (nous utilisons ce fichier afin d\'éviter besoin de faire un nombre inutilement élevé de requêtes vers le serveur);<br /><br />S\'il vous plaît, attendez (la page est rechargée automatiquement après le téléchargement est terminé)...<br /><br />';
-$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Ne peut pas trouver "%PATH%/private/bannedips.csv"!<br />S\'il vous plaît télécharger manuellement d\'ici:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Après le téléchargement, décompresser le fichier contenu à la répertoire \'private\' de la SFS Mass IP Checker, et puis essayez à nouveau.<br /><br />(( Nous utilisons ce fichier afin d\'éviter besoin de faire un nombre inutilement élevé de requêtes vers le serveur. ))';
-$SFSMassIPChecker['langdata']['cant_write'] = 'Ne peux pas d\'écrire dans le cache!<br />S\'il vous plaît vérifier permissions CHMOD!';
+$SFSMassIPChecker['langdata']['bannedips_missing'] = 'Téléchargement d\'une nouvelle copie de « bannedips.csv » du SFS (nous utilisons ce fichier afin d\'éviter besoin de faire un nombre inutilement élevé de requêtes vers le serveur);<br /><br />S\'il vous plaît, attendez (la page est rechargée automatiquement après le téléchargement est terminé)...<br /><br />';
+$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Ne peut pas trouver « %PATH%/private/bannedips.csv »!<br />S\'il vous plaît télécharger manuellement d\'ici:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Après le téléchargement, décompresser le fichier contenu à la répertoire \'private\' de la SFS Mass IP Checker, et puis essayez à nouveau.<br /><br />(( Nous utilisons ce fichier afin d\'éviter besoin de faire un nombre inutilement élevé de requêtes vers le serveur. ))';
+$SFSMassIPChecker['langdata']['cant_write'] = 'Ne peux pas d\'écrire dans le cache !<br />S\'il vous plaît vérifier permissions CHMOD !';
 $SFSMassIPChecker['langdata']['erroneous_local'] = 'Erroné (Local).';
-$SFSMassIPChecker['langdata']['failure_badip'] = 'Adresse IP non valide!';
-$SFSMassIPChecker['langdata']['failure_private'] = 'Adresse IP locale/privé!';
+$SFSMassIPChecker['langdata']['failure_badip'] = 'Adresse IP non valide !';
+$SFSMassIPChecker['langdata']['failure_private'] = 'Adresse IP locale/privé !';
 $SFSMassIPChecker['langdata']['failure_notunderstood'] = 'Échec (requête n\'a pas été compris par SFS)!';
 $SFSMassIPChecker['langdata']['failure_timeout'] = 'Échec (requête erreur ou fin du temps)!';
 $SFSMassIPChecker['langdata']['failure_unknown'] = 'Une erreur inconnue est survenue.';
@@ -46,4 +46,4 @@ $SFSMassIPChecker['langdata']['table_frequency'] = 'Fréquence';
 $SFSMassIPChecker['langdata']['table_ip_address'] = 'IP Adresse';
 $SFSMassIPChecker['langdata']['table_last_seen'] = 'Dernier Rapport';
 $SFSMassIPChecker['langdata']['table_lookup_status'] = 'Statut';
-$SFSMassIPChecker['langdata']['table_spammer'] = 'Spammeur?';
+$SFSMassIPChecker['langdata']['table_spammer'] = 'Spammeur ?';
