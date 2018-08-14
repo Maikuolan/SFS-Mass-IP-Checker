@@ -19,7 +19,6 @@ To install the SFS Mass IP Checker, all you need to do is upload it to a server 
 - *Use of this script must adhere to the __[SFS Acceptable Use Policy](http://www.stopforumspam.com/legal).__*
 
 ### Also worth checking out:
-- __[WebSecTools.com](https://websectools.com/):__ A collection of simple webmaster tools to secure websites.
 - __[Gunner's Software](http://www.gunnerinc.com/):__ In particular, I strongly recommend checking out "__Gunner's Spam List Checker__"; This is a self-executable stand-alone tool that allows you both to submit and to check IPs against the Stop Forum Spam database en-masse.
 - __[phpMussel](https://phpmussel.github.io/):__ PHP-based anti-virus anti-trojan anti-malware solution (created by the same author as this script).
 - __[CIDRAM](https://cidram.github.io/):__ Classless Inter-Domain Routing Access Manager (created by the same author as this script).
