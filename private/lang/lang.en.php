@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: English language data (last modified: 2016.09.10).
+ * This file: English language data (last modified: 2018.09.03).
  *
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -19,7 +19,7 @@ if(!defined('SFSMassIPChecker')) {
 $SFSMassIPChecker['langdata'] = array('xmlLang' => 'en');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Downloading a fresh copy of "bannedips.csv" from SFS (we utilise this file in order to avoid needing to make an unnecessarily large number of requests to the server);<br /><br />Please wait (the page will refresh automatically after the download has completed)...<br /><br />';
-$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Can\'t locate "%PATH%/private/bannedips.csv"!<br />Please download manually from:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />After downloading, decompress the contained file to the \'private\' directory of the SFS Mass IP Checker, and then try again.<br /><br />(( We utilise this file in order to avoid needing to make an unnecessarily large number of requests to the server. ))';
+$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Can\'t locate "%PATH%/private/bannedips.csv"!<br />Please download manually from:<br /><a href="https://www.stopforumspam.com/downloads/bannedips.zip">https://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />After downloading, decompress the contained file to the \'private\' directory of the SFS Mass IP Checker, and then try again.<br /><br />(( We utilise this file in order to avoid needing to make an unnecessarily large number of requests to the server. ))';
 $SFSMassIPChecker['langdata']['cant_write'] = 'Unable to write to the cache!<br />Please check your CHMOD file permissions!';
 $SFSMassIPChecker['langdata']['erroneous_local'] = 'Erroneous (Local).';
 $SFSMassIPChecker['langdata']['failure_badip'] = 'Invalid IP address!';

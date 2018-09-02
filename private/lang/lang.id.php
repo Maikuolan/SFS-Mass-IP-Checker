@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Indonesian language data (last modified: 2016.09.10).
+ * This file: Indonesian language data (last modified: 2018.09.03).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -19,7 +19,7 @@ if(!defined('SFSMassIPChecker')) {
 $SFSMassIPChecker['langdata'] = array('xmlLang' => 'id');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Mendownload salinan "bannedips.csv" segar dari SFS (kami memanfaatkan file ini untuk menghindari perlu membuat jumlah tidak perlu besar permintaan ke server);<br /><br />Silahkan tunggu (halaman ini akan menyegarkan otomatis setelah download selesai)...<br /><br />';
-$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Tidak dapat menemukan "%PATH%/private/bannedips.csv"!<br />Silahkan download manual dari:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Setelah mendownload, dekompresi file yang terdapat pada \'private\' direktori dari SFS Mass IP Checker, dan kemudian coba lagi.<br /><br />(( Kami memanfaatkan file ini untuk menghindari perlu membuat jumlah tidak perlu besar permintaan ke server. ))';
+$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Tidak dapat menemukan "%PATH%/private/bannedips.csv"!<br />Silahkan download manual dari:<br /><a href="https://www.stopforumspam.com/downloads/bannedips.zip">https://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Setelah mendownload, dekompresi file yang terdapat pada \'private\' direktori dari SFS Mass IP Checker, dan kemudian coba lagi.<br /><br />(( Kami memanfaatkan file ini untuk menghindari perlu membuat jumlah tidak perlu besar permintaan ke server. ))';
 $SFSMassIPChecker['langdata']['cant_write'] = 'Tidak dapat menulis ke cache!<br />Silakan periksa hak akses file CHMOD Anda!';
 $SFSMassIPChecker['langdata']['erroneous_local'] = 'Salah (Lokal).';
 $SFSMassIPChecker['langdata']['failure_badip'] = 'Alamat IP tidak valid!';

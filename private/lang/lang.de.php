@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: German language data (last modified: 2016.09.10).
+ * This file: German language data (last modified: 2018.09.03).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -20,7 +20,7 @@ if(!defined('SFSMassIPChecker')) {
 $SFSMassIPChecker['langdata'] = array('xmlLang' => 'de');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Lade eine aktuelle Kopie von "bannedips.csv" von SFS runter (wir verwenden diese Datei um unnötig viele Anfragen an den Server zu verhindern);<br /><br />Bitte warten (die Seite wird automatisch neugeladen, nachdem der Download abgeschlossen wurde)...<br /><br />';
-$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Kann "%PATH%/private/bannedips.csv" nicht finden!<br />Bitte laden Sie diese manuell runter von:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Nach dem Download entpacken Sie die Datei in das \'private\' Verzeichnis vom SFS Mass IP Checker und versuchen Sie es dann erneut.<br /><br />(( Wir verwenden diese Datei um unnötig viele Anfragen an den Server zu verhindern ))';
+$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Kann "%PATH%/private/bannedips.csv" nicht finden!<br />Bitte laden Sie diese manuell runter von:<br /><a href="https://www.stopforumspam.com/downloads/bannedips.zip">https://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Nach dem Download entpacken Sie die Datei in das \'private\' Verzeichnis vom SFS Mass IP Checker und versuchen Sie es dann erneut.<br /><br />(( Wir verwenden diese Datei um unnötig viele Anfragen an den Server zu verhindern ))';
 $SFSMassIPChecker['langdata']['cant_write'] = 'Kann Cache nicht schreiben!<br />Bitte überprüfen Sie Ihre CHMOD-Dateirechte!';
 $SFSMassIPChecker['langdata']['erroneous_local'] = 'Fehlerhaft (Lokal).';
 $SFSMassIPChecker['langdata']['failure_badip'] = 'Ungültig IP-Adresse!';

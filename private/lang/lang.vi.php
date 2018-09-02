@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Vietnamese language data (last modified: 2016.09.10).
+ * This file: Vietnamese language data (last modified: 2018.09.03).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -19,7 +19,7 @@ if(!defined('SFSMassIPChecker')) {
 $SFSMassIPChecker['langdata'] = array('xmlLang' => 'vi');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Tải về một bản sao mới của "bannedips.csv" từ SFS (chúng tôi sử dụng tập tin này để tránh cần phải thực hiện một số lớn không cần thiết của yêu cầu đến máy chủ);<br /><br />Vui lòng chờ đợi (trang sẽ làm mới tự động sau khi quá trình tải hoàn thành)...<br /><br />';
-$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Không thể tìm thấy "%PATH%/private/bannedips.csv"!<br />Vui lòng tải bằng tay từ:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Sau khi tải về, giải nén các tập tin vào thư mục \'private\' của SFS Mass IP Checker, và sau đó thử lại.<br /><br />(( Chúng tôi sử dụng tập tin này để tránh cần phải thực hiện một số lớn không cần thiết của yêu cầu đến máy chủ. ))';
+$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Không thể tìm thấy "%PATH%/private/bannedips.csv"!<br />Vui lòng tải bằng tay từ:<br /><a href="https://www.stopforumspam.com/downloads/bannedips.zip">https://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Sau khi tải về, giải nén các tập tin vào thư mục \'private\' của SFS Mass IP Checker, và sau đó thử lại.<br /><br />(( Chúng tôi sử dụng tập tin này để tránh cần phải thực hiện một số lớn không cần thiết của yêu cầu đến máy chủ. ))';
 $SFSMassIPChecker['langdata']['cant_write'] = 'Không thể ghi vào bộ nhớ cache!<br />Vui lòng kiểm tra quyền truy cập tập tin CHMOD của bạn!';
 $SFSMassIPChecker['langdata']['erroneous_local'] = 'Erroneous (Local).';
 $SFSMassIPChecker['langdata']['failure_badip'] = 'Địa chỉ IP không hợp lệ!';

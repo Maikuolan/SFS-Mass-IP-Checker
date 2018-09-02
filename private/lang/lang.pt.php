@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Portuguese language data (last modified: 2016.10.06).
+ * This file: Portuguese language data (last modified: 2018.09.03).
  * 
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -19,7 +19,7 @@ if(!defined('SFSMassIPChecker')) {
 $SFSMassIPChecker['langdata'] = array('xmlLang' => 'pt');
 
 $SFSMassIPChecker['langdata']['bannedips_missing'] = 'Obtendo uma nova cópia de "bannedips.csv" a partir da SFS (nós utilizamos este arquivo a fim de evitar a necessidade de fazer um grande número de solicitações desnecessárias para o servidor);<br /><br />Por favor aguarde (a página será atualizada automaticamente após a obtenção do arquivo)...<br /><br />';
-$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Não é possível localizar "%PATH%/private/bannedips.csv"!<br />Por favor faça o download manualmente a partir de:<br /><a href="http://www.stopforumspam.com/downloads/bannedips.zip">http://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Depois de o obter, descompactar o arquivo contido no diretório \'private\' do SFS Mass IP Checker, e tente novamente.<br /><br />(( Nós utilizamos este arquivo a fim de evitar a necessidade de fazer um grande número de solicitações desnecessárias para o servidor. ))';
+$SFSMassIPChecker['langdata']['bannedips_missing_cant_zip'] = 'Não é possível localizar "%PATH%/private/bannedips.csv"!<br />Por favor faça o download manualmente a partir de:<br /><a href="https://www.stopforumspam.com/downloads/bannedips.zip">https://www.stopforumspam.com/downloads/bannedips.zip</a><br /><br />Depois de o obter, descompactar o arquivo contido no diretório \'private\' do SFS Mass IP Checker, e tente novamente.<br /><br />(( Nós utilizamos este arquivo a fim de evitar a necessidade de fazer um grande número de solicitações desnecessárias para o servidor. ))';
 $SFSMassIPChecker['langdata']['cant_write'] = 'Não é possível gravar para a cache!<br />Por favor verifique suas permissões CHMOD!';
 $SFSMassIPChecker['langdata']['erroneous_local'] = 'Errôneo (Local).';
 $SFSMassIPChecker['langdata']['failure_badip'] = 'Endereço IP inválido!';
