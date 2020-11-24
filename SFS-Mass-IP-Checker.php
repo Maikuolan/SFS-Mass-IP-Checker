@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Core script file (last modified: 2018.02.24).
+ * This file: Core script file (last modified: 2020.11.24).
  *
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -467,13 +467,12 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/bannedips.csv')) {
 /**
  * The main body of the page (the HTML form used to submit data for querying).
  */
-$SFSMassIPChecker['PageBody'] =
-    '<form action="" method="POST" name="SFSMassIPChecker"><center>' .
-    $SFSMassIPChecker['langdata']['separate_entries'] . '<br /><br /><textar' .
-    'ea name="IPAddr" id="IPAddr" style="width:98%;height:100px">' .
-    $SFSMassIPChecker['IPAddr'] .
-    '</textarea><br /><br /><input type="submit" value="' .
-    $SFSMassIPChecker['langdata']['input_submit'] . '" /></center></form>';
+$SFSMassIPChecker['PageBody'] = sprintf(
+    '<form action="" method="POST" name="SFSMassIPChecker"><center>%1$s<br /><br /><textarea name="IPAddr" id="IPAddr" style="width:98%%;height:100px">%2$s</textarea><br /><br /><input type="submit" value="%3$s" /></center></form>',
+    $SFSMassIPChecker['langdata']['separate_entries'],
+    $SFSMassIPChecker['IPAddr'],
+    $SFSMassIPChecker['langdata']['input_submit']
+);
 
 /**
  * If the user has submitted IPs to be checked by the SFS Mass IP Checker, make

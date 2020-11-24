@@ -20,6 +20,9 @@ entries will be deleted when those goals have been achieved.
 - [2018.02.24; Sub-minor code change; Maikuolan]: Fixed some broken links and
   slightly refactored some of the codebase.
 
+- [2020.11.24; Bug-fix; Maikuolan]: Fixed a missing escape character in a
+  sprintf call.
+
 === Version/Release 0.1.3 ===
 PATCH RELEASE.
 

@@ -13,7 +13,7 @@
  */
 
 /** Prevents execution from outside of the script. */
-if(!defined('SFSMassIPChecker')) {
+if (!defined('SFSMassIPChecker')) {
     die('[SFS-Mass-IP-Checker] This should not be accessed directly.');
 }
 
