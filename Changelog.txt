@@ -7,6 +7,11 @@ Versioning guidelines for SemVer can be found at: http://www.semver.org/
 
 === Changes made since last versioned release ===
 
+(none)
+
+=== Version/Release 1.0.0 ===
+MAJOR RELEASE (BACKWARDS INCOMPATIBLE).
+
 - [2016.10.06; Sub-minor code change; DailyMatters]: Improved Portuguese L10N.
 
 - [2018.02.24; Sub-minor code change; Maikuolan]: Fixed some broken links and
@@ -19,6 +24,9 @@ Versioning guidelines for SemVer can be found at: http://www.semver.org/
   and aesthetics of the script. Performed some house cleaning of the codebase.
   Ditch using file functions to communicate with SFS in favour of using curl.
   Rework file reader.
+
+Caleb M (Maikuolan),
+November 25, 2020.
 
 === Version/Release 0.1.3 ===
 PATCH RELEASE.
