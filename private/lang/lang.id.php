@@ -4,7 +4,7 @@
  * against the Stop Forum Spam database.
  *
  * This file: Indonesian language data (last modified: 2020.11.25).
- * 
+ *
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
  *
