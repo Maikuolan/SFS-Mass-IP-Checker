@@ -1,4 +1,5 @@
-[![PHP >= 5.3.0](https://img.shields.io/badge/PHP-%3E%3D%205.3.0-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
+[![v0: PHP >= 5.3.0](https://img.shields.io/badge/v0-PHP%20%3E%3D%205.3.0-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
+[![v1: PHP >= 5.4.0](https://img.shields.io/badge/v1-PHP%20%3E%3D%205.4.0-8892bf.svg)](https://maikuolan.github.io/Compatibility-Charts/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](http://makeapullrequest.com)
 
@@ -26,4 +27,5 @@ To install the SFS Mass IP Checker, all you need to do is upload it to a server 
 
 ---
 
-*Last modified: 3 September 2018 (2018.09.03).*
+
+Last Updated: 10 June 2020 (2020.06.10).
