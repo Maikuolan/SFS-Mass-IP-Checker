@@ -26,11 +26,61 @@ $SFSMassIPChecker = [
     'Time' => time()
 ];
 
-/** Define the script UA. */
-$SFSMassIPChecker['UserAgent'] =
-    'SFS-Mass-IP-Checker/' . $SFSMassIPChecker['ScriptVersion'] .
-    ' (https://github.com/Maikuolan/SFS-Mass-IP-Checker) via ' .
-    $SFSMassIPChecker['UserIPAddr'];
+/**
+ * Used to send cURL requests (adapted from CIDRAM/phpMussel request closure).
+ *
+ * @param string $URI The resource to request.
+ * @param mixed $Params If empty or omitted, CURLOPT_POST is false. Otherwise,
+ *      CURLOPT_POST is true, and the parameter is used to supply
+ *      CURLOPT_POSTFIELDS. Normally an associative array of key-value pairs,
+ *      but can be any kind of value supported by CURLOPT_POSTFIELDS. Optional.
+ * @param int $Timeout An optional timeout limit.
+ * @param array $Headers An optional array of headers to send with the request.
+ * @return string The results of the request, or an empty string upon failure.
+ */
+$Request = function ($URI, $Params = [], $Timeout = -1, array $Headers = []) use (&$SFSMassIPChecker) {
+    $Request = curl_init($URI);
+    $LCURI = strtolower($URI);
+    $SSL = (substr($LCURI, 0, 6) === 'https:');
+    curl_setopt($Request, CURLOPT_FRESH_CONNECT, true);
+    curl_setopt($Request, CURLOPT_HEADER, false);
+    if (empty($Params)) {
+        curl_setopt($Request, CURLOPT_POST, false);
+        $Post = false;
+    } else {
+        curl_setopt($Request, CURLOPT_POST, true);
+        curl_setopt($Request, CURLOPT_POSTFIELDS, $Params);
+        $Post = true;
+    }
+    if ($SSL) {
+        curl_setopt($Request, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+        curl_setopt($Request, CURLOPT_SSL_VERIFYPEER, false);
+    }
+    curl_setopt($Request, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($Request, CURLOPT_MAXREDIRS, 1);
+    curl_setopt($Request, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($Request, CURLOPT_TIMEOUT, ($Timeout > 0 ? $Timeout : 120));
+    curl_setopt($Request, CURLOPT_USERAGENT, sprintf(
+        'SFS-Mass-IP-Checker/%s (https://github.com/Maikuolan/SFS-Mass-IP-Checker) via %s',
+        $SFSMassIPChecker['ScriptVersion'],
+        $SFSMassIPChecker['UserIPAddr']
+    ));
+    curl_setopt($Request, CURLOPT_HTTPHEADER, $Headers ?: []);
+
+    /** Execute and get the response. */
+    $Response = curl_exec($Request);
+
+    /** Most recent HTTP code flag. */
+    $CIDRAM['Most-Recent-HTTP-Code'] = (
+        ($Info = curl_getinfo($Request)) && is_array($Info) && isset($Info['http_code'])
+    ) ? $Info['http_code'] : 200;
+
+    /** Close the cURL session. */
+    curl_close($Request);
+
+    /** Return the results of the request. */
+    return $Response;
+};
 
 /** Fetch submitted IPs. */
 $SFSMassIPChecker['IPAddr'] = !empty($_POST['IPAddr']) ? $_POST['IPAddr'] : (
@@ -279,19 +329,10 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
     }
     $Output = [];
     if (($Final && $GLOBALS['SFSMassIPChecker']['BulkIntID'] > 0) || $GLOBALS['SFSMassIPChecker']['BulkIntID'] > 14) {
-        $Context = stream_context_create(array(
-            'http' => [
-                'method' => 'POST',
-                'header' => 'Content-type: application/x-www-form-urlencoded; charset=iso-8859-1',
-                'user_agent' => $GLOBALS['SFSMassIPChecker']['UserAgent'],
-                'content' => $GLOBALS['SFSMassIPChecker']['BulkQuery'],
-                'timeout' => 120
-            ]
-        ));
-        $Results = @file_get_contents(
+        $Results = $GLOBALS['Request'](
             'http://www.stopforumspam.com/api?' . $GLOBALS['SFSMassIPChecker']['BulkQuery'] . '&f=serial',
-            false,
-            $Context
+            [],
+            160
         );
         $GLOBALS['SFSMassIPChecker']['BulkProcMe'] = true;
         $GLOBALS['SFSMassIPChecker']['BulkQuery'] = '';
@@ -403,24 +444,11 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/bannedips.csv')) {
         echo ParseTemplate($SFSMassIPChecker['langdata']['bannedips_missing_cant_zip']);
         die;
     }
-    echo
-        '<html><body onload="javascript:location.reload(true)"><p style="font-family' .
-        ':monospace;white-space:pre">:: SFS-Mass-IP-Checker ::<br /><br />' .
-        $SFSMassIPChecker['langdata']['bannedips_missing'] . '</p>';
-    $Handle = stream_context_create(array(
-        'http' => [
-            'method' => 'GET',
-            'header' => 'Content-type: application/x-www-form-urlencoded; charset=iso-8859-1',
-            'user_agent' => $SFSMassIPChecker['UserAgent'],
-            'content' => '',
-            'timeout' => 300
-        ]
-    ));
-    $SFSMassIPChecker['stream'] = @file_get_contents(
-        'http://www.stopforumspam.com/downloads/bannedips.zip',
-        false,
-        $Handle
+    echo sprintf(
+        '<html><body onload="javascript:location.reload(true)"><p style="font-family:monospace">:: SFS-Mass-IP-Checker ::<br /><br />%s</p>',
+        $SFSMassIPChecker['langdata']['bannedips_missing']
     );
+    $SFSMassIPChecker['stream'] = $Request('http://www.stopforumspam.com/downloads/bannedips.zip', [], 300);
     $Handle = fopen($SFSMassIPChecker['Path'] . '/private/bannedips.zip', 'wb');
     fwrite($Handle, $SFSMassIPChecker['stream']);
     fclose($Handle);
@@ -535,7 +563,7 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
     }
 
     $SFSMassIPChecker['PageBody'] .=
-        '<hr /><center><table style="width:500px"><tr><td>' .
+        '<hr /><table><tr><td>' .
         $SFSMassIPChecker['langdata']['table_ip_address'] . '</td><td>' .
         $SFSMassIPChecker['langdata']['table_lookup_status'] . '</td><td>' .
         $SFSMassIPChecker['langdata']['table_spammer'] . '</td><td>' .
@@ -585,7 +613,7 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
     }
     unset($SFSMassIPChecker['TheseResults'], $SFSMassIPChecker['Results']);
 
-    $SFSMassIPChecker['PageBody'] .= '</table></center>';
+    $SFSMassIPChecker['PageBody'] .= '</table>';
     if ($SFSMassIPChecker['Cache']['Counter'] !== $SFSMassIPChecker['Counter']) {
         $SFSMassIPChecker['CacheModified'] = true;
         $SFSMassIPChecker['Cache']['Counter'] = $SFSMassIPChecker['Counter'];

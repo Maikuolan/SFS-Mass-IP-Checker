@@ -25,6 +25,7 @@ entries will be deleted when those goals have been achieved.
 
 - [2020.11.25; Maikuolan]: Upped minimum required PHP version. Reworked the CSS
   and aesthetics of the script. Performed some house cleaning of the codebase.
+  Ditch using file functions to communicate with SFS in favour of using curl.
 
 === Version/Release 0.1.3 ===
 PATCH RELEASE.
