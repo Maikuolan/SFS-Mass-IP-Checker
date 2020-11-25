@@ -90,26 +90,26 @@ $SFSMassIPChecker['lang'] = !empty($_POST['lang']) ? strtolower($_POST['lang']) 
  * Reads and returns the contents of files.
  *
  * @param string $File Path and filename of the file to read.
- * @return string|bool Content of the file returned by the function or false.
+ * @return string The file's contents (an empty string on failure).
  */
 function SFSMassIPCheckerFileFetcher($File) {
     if (!is_file($File) || !is_readable($File)) {
-        return false;
+        return '';
     }
-    if ($s = filesize($File) ?: 0) {
-        $s = ceil($s / 49152);
-    }
+
+    /** Default blocksize (128KB). */
+    static $Blocksize = 131072;
+
     $Data = '';
-    if ($s > 0) {
-        $Handle = fopen($File, 'rb');
-        $r = 0;
-        while ($r < $s) {
-            $Data .= fread($Handle, 49152);
-            $r++;
-        }
-        fclose($Handle);
+    $Handle = fopen($File, 'rb');
+    if (!is_resource($Handle)) {
+        return '';
     }
-    return !empty($Data) ? $Data : false;
+    while (!feof($Handle)) {
+        $Data .= fread($Handle, $Blocksize);
+    }
+    fclose($Handle);
+    return $Data;
 }
 
 /**
