@@ -28,4 +28,4 @@ To install the SFS Mass IP Checker, all you need to do is upload it to a server 
 ---
 
 
-Last Updated: 10 June 2020 (2020.06.10).
+Last Updated: 25 November 2020 (2020.11.25).
