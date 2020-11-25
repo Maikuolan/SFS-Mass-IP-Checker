@@ -69,11 +69,6 @@ $Request = function ($URI, $Params = [], $Timeout = -1, array $Headers = []) use
     /** Execute and get the response. */
     $Response = curl_exec($Request);
 
-    /** Most recent HTTP code flag. */
-    $CIDRAM['Most-Recent-HTTP-Code'] = (
-        ($Info = curl_getinfo($Request)) && is_array($Info) && isset($Info['http_code'])
-    ) ? $Info['http_code'] : 200;
-
     /** Close the cURL session. */
     curl_close($Request);
 
@@ -643,4 +638,3 @@ if ($SFSMassIPChecker['CacheModified']) {
 
 /** Prepare final page output and kill the script. */
 echo ParseTemplate($SFSMassIPChecker['PageBody']);
-die;
