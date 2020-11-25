@@ -18,7 +18,6 @@ $SFSMassIPChecker = [
     'ScriptVersion' => '1.0.0',
     'UserIPAddr' => $_SERVER['REMOTE_ADDR'],
     'CacheModified' => false,
-    'Limit' => 9999,
     'Path' => __DIR__,
     'bannedipsAppend' => '',
     'cleanAppend' => '',
