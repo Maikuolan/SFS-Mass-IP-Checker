@@ -23,7 +23,7 @@ MAJOR RELEASE (BACKWARDS INCOMPATIBLE).
 - [2020.11.25; Maikuolan]: Upped minimum required PHP version. Reworked the CSS
   and aesthetics of the script. Performed some house cleaning of the codebase.
   Ditch using file functions to communicate with SFS in favour of using curl.
-  Rework file reader.
+  Reworked file reader.
 
 Caleb M (Maikuolan),
 November 25, 2020.

@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Core script file (last modified: 2020.11.25).
+ * This file: Core script file (last modified: 2020.11.29).
  *
  * This document and its associated package can be downloaded for free from:
  * - GitHub <https://github.com/Maikuolan/SFS-Mass-IP-Checker>.
@@ -15,7 +15,7 @@ parse_str($_SERVER['QUERY_STRING'], $query);
 
 /** Define basic script variables. */
 $SFSMassIPChecker = [
-    'ScriptVersion' => '1.0.0',
+    'ScriptVersion' => '1.0.1',
     'UserIPAddr' => $_SERVER['REMOTE_ADDR'],
     'CacheModified' => false,
     'Path' => __DIR__,
@@ -92,7 +92,8 @@ $SFSMassIPChecker['lang'] = !empty($_POST['lang']) ? strtolower($_POST['lang']) 
  * @param string $File Path and filename of the file to read.
  * @return string The file's contents (an empty string on failure).
  */
-function SFSMassIPCheckerFileFetcher($File) {
+function SFSMassIPCheckerFileFetcher($File)
+{
     if (!is_file($File) || !is_readable($File)) {
         return '';
     }
@@ -120,7 +121,8 @@ function SFSMassIPCheckerFileFetcher($File) {
  *      `template.html` by the function.
  * @return string Parsed `template.html` data to be used for page output.
  */
-function ParseTemplate($PageData) {
+function ParseTemplate($PageData)
+{
     $Template = SFSMassIPCheckerFileFetcher($GLOBALS['SFSMassIPChecker']['Path'] . '/private/template.html');
     if (is_array($PageData)) {
         foreach ($PageData as $Key => $Value) {
@@ -204,7 +206,8 @@ if (!function_exists('is_serialized')) {
      * @param string $input Variable to check.
      * @return bool Returns true if the input is serialized data.
      */
-    function is_serialized($input) {
+    function is_serialized($input)
+    {
         return ($input === serialize(false) || @unserialize($input) !== false);
     }
 }
@@ -224,7 +227,8 @@ if (!function_exists('is_serialized')) {
  * @return string|array|bool Returned data depends upon context (read further
  *      into the code and documentation for a better understanding).
  */
-function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false, $Final = false) {
+function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false, $Final = false)
+{
     if (!isset($GLOBALS['SFSMassIPChecker']['bannedips'])) {
         $GLOBALS['SFSMassIPChecker']['bannedips'] =
             ',' . SFSMassIPCheckerFileFetcher($GLOBALS['SFSMassIPChecker']['Path'] . '/private/bannedips.csv');
@@ -447,7 +451,7 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/bannedips.csv')) {
     fwrite($Handle, $SFSMassIPChecker['stream']);
     fclose($Handle);
     $SFSMassIPChecker['stream'] = zip_open($SFSMassIPChecker['Path'] . '/private/bannedips.zip');
-    while(true) {
+    while (true) {
         if (!$Handle = @zip_read($SFSMassIPChecker['stream'])) {
             break;
         }
@@ -500,7 +504,6 @@ $SFSMassIPChecker['PageBody'] = sprintf(
  * the template handler can display the results to the user.
  */
 if (!empty($SFSMassIPChecker['IPAddr'])) {
-
     $SFSMassIPChecker['IPAddr'] = preg_split('/[,\n\r]+/', $SFSMassIPChecker['IPAddr'], -1, PREG_SPLIT_NO_EMPTY);
     $SFSMassIPChecker['bannedips'] = SFSMassIPCheckerFileFetcher(
         $SFSMassIPChecker['Path'] . '/private/bannedips.csv'
@@ -529,7 +532,6 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
 
     /** Code block executed if any errors occurred during lookup. */
     if ($SFSMassIPChecker['Error']) {
-
         $SFSMassIPChecker['PageBody'] .=
             '<hr /><center><img src="public/error.png" alt="Error!" /><br />';
 
@@ -553,7 +555,6 @@ if (!empty($SFSMassIPChecker['IPAddr'])) {
         /** Prepare final page output and kill the script. */
         echo ParseTemplate($SFSMassIPChecker['PageBody']);
         die;
-
     }
 
     $SFSMassIPChecker['PageBody'] .=
