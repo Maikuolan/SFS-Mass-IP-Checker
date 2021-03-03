@@ -5,7 +5,6 @@
     "license": "MIT",
     "support": {
         "issues": "https://github.com/Maikuolan/SFS-Mass-IP-Checker/issues",
-        "wiki": "https://github.com/Maikuolan/SFS-Mass-IP-Checker/wiki",
         "source": "https://github.com/Maikuolan/SFS-Mass-IP-Checker"
     },
     "require": {
