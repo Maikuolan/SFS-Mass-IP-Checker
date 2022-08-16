@@ -3,7 +3,7 @@
  * SFS MASS IP Checker: A stand-alone script for checking IP addresses en-masse
  * against the Stop Forum Spam database.
  *
- * This file: Core script file (last modified: 2022.02.12).
+ * This file: Core script file (last modified: 2022.08.16).
  *
  * @author Caleb M (Maikuolan) <https://github.com/Maikuolan>.
  * @link https://github.com/Maikuolan/SFS-Mass-IP-Checker
@@ -240,13 +240,13 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
             ',' . SFSMassIPCheckerFileFetcher($GLOBALS['SFSMassIPChecker']['Path'] . '/private/erroneous.csv');
     }
     if (is_array($IPAddr)) {
-        if (
-            !isset($GLOBALS['SFSMassIPChecker']['PostChecked']) ||
-            !isset($GLOBALS['SFSMassIPChecker']['BulkResults']) ||
-            !isset($GLOBALS['SFSMassIPChecker']['BulkQuery']) ||
-            !isset($GLOBALS['SFSMassIPChecker']['BulkIntID']) ||
-            !isset($GLOBALS['SFSMassIPChecker']['BulkProcMe'])
-        ) {
+        if (!isset(
+            $GLOBALS['SFSMassIPChecker']['PostChecked'],
+            $GLOBALS['SFSMassIPChecker']['BulkResults'],
+            $GLOBALS['SFSMassIPChecker']['BulkQuery'],
+            $GLOBALS['SFSMassIPChecker']['BulkIntID'],
+            $GLOBALS['SFSMassIPChecker']['BulkProcMe']
+        )) {
             return false;
         }
         if (!$PreChecked) {
@@ -350,7 +350,7 @@ function SFSMassIPCheckerCheckIP($IPAddr, $PreChecked = false, $EntryID = false,
             throw new \Exception(3);
         }
         $Results = unserialize($Results);
-        if (!isset($Results['success']) || !isset($Results['ip'])) {
+        if (!isset($Results['success'], $Results['ip'])) {
             /** Throw an exception if the lookup failed. */
             throw new \Exception(3);
         }
@@ -468,8 +468,10 @@ if (!file_exists($SFSMassIPChecker['Path'] . '/private/bannedips.csv')) {
         fwrite($Handle, ',');
         fclose($Handle);
     }
+
     /** Deletes the old "bannedips.zip", which we now no longer need. */
     unlink($SFSMassIPChecker['Path'] . '/private/bannedips.zip');
+
     /**
      * Save cache data to the cache (prevents infinite loop with page
      * reloading).
