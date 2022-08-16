@@ -9,6 +9,12 @@ Versioning guidelines for SemVer can be found at: http://www.semver.org/
 
 (none)
 
+=== Version/Release 1.0.1 ===
+MAINTENANCE RELEASE.
+
+Caleb M (Maikuolan),
+August 16, 2022.
+
 === Version/Release 1.0.0 ===
 MAJOR RELEASE (BACKWARDS INCOMPATIBLE).
 
