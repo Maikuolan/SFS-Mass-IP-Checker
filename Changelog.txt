@@ -7,8 +7,19 @@ Versioning guidelines for SemVer can be found at: http://www.semver.org/
 
 === Changes made since last versioned release ===
 
-- [2022.11.20; Maikuolan]: Avoid packaging unnecessary files into dist.
-- [2024.11.06; Maikuolan]: Added PHP 8.4 to workflows.
+(none)
+
+=== Version/Release 1.0.2 ===
+MAINTENANCE RELEASE.
+
+- [2022.11.20]: Avoid packaging unnecessary files into dist.
+
+- [2024.11.06]: Added PHP 8.4 to workflows.
+
+- [2025.11.21]: Added PHP 8.5 to workflows.
+
+Caleb M (Maikuolan),
+November 21, 2025.
 
 === Version/Release 1.0.1 ===
 MAINTENANCE RELEASE.
