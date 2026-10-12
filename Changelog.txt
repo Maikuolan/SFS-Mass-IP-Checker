@@ -5,9 +5,12 @@ SFS Mass IP Checker adheres to the SemVer guidelines for versioning.
 
 Versioning guidelines for SemVer can be found at: http://www.semver.org/
 
-=== Changes made since last versioned release ===
+=== Version/Release 1.0.3 ===
+PATCH RELEASE.
 
-(none)
+- [2026.10.12]: Since PHP8, curl_close() has had no effect, and has been
+  deprecated as of PHP 8.5; Accordingly, where used, it has been guarded by the
+  PHP version ID.
 
 === Version/Release 1.0.2 ===
 MAINTENANCE RELEASE.
